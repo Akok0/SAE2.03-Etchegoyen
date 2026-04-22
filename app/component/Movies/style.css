@@ -1,0 +1,30 @@
+.movies{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    .movie{
+        position: relative;
+        width: 10rem;
+        aspect-ratio: 7/9;
+        overflow: hidden;
+        .movie__cover{
+            object-fit: cover;
+            object-position: top;
+        }
+        .movie__title{
+            position: absolute;
+            bottom: 0;
+            padding: 1rem;
+            color: yellow;
+        }
+    }
+    
+    @media(min-width: 44em){
+        grid-template-columns: repeat(3, auto);
+        gap: 1rem;
+        .movie{
+            width: 20rem;
+        }
+    }
+}
