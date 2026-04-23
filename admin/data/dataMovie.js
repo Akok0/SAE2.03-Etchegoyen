@@ -3,10 +3,6 @@ let HOST_URL = "https://mmi.unilim.fr/~etchegoyen3/SAE2.03-Etchegoyen"; // CHANG
 
 let DataMovie = {};
 
-/**
-*@param {*} fdata
-*@returns
-*/
 DataMovie.add = async function(){
     let config = {
         method: "POST",

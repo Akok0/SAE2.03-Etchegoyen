@@ -8,11 +8,9 @@ let Movies = {};
 Movies.format = function (data, tab) {
   let html = template;
   if (data.length == 0) {
-    return html.replace(
-      "{{movie}}",
-      "<p class='movies__error'>Aucun film disponible pour le moment.</p>",
-    );
-  } else {
+    html = html.replace("{{movie}}", "<p class='movies__error'>Aucun film disponible pour le moment.</p>");
+  }
+  else {
     let htmlMovie = "";
     for (let movie of data) {
       let card = templateMovie;
@@ -21,8 +19,9 @@ Movies.format = function (data, tab) {
         .replaceAll("{{image}}", "../server/images/" + movie.image);
       htmlMovie += card;
     }
-    return html.replace("{{movie}}", htmlMovie);
+    html = html.replace("{{movie}}", htmlMovie);
   }
+  return html
 };
 
 export { Movies };

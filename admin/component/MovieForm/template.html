@@ -1,0 +1,41 @@
+<div>
+  <h1>Ajouter un film</h1>
+
+  <form class="addMenu__form">
+    <input type="text" name="titre" placeholder="Titre du film" />
+    <input type="text" name="realisateur" placeholder="Réalisateur du film" />
+    <input type="number" name="annee" value="2026" />
+    <input type="time" name="duree" />
+    <textarea
+      name="description"
+      placeholder="Description ou synopsis"
+    ></textarea>
+
+    <select name="categorie">
+      <option value="1">Action</option>
+      <option value="2">Comédie</option>
+      <option value="3">Drame</option>
+      <option value="4">Science-Fiction</option>
+      <option value="5">Animation</option>
+      <option value="6">Thriller</option>
+      <option value="7">Horreur</option>
+      <option value="8">Aventure</option>
+      <option value="9">Fantaisie</option>
+      <option value="10">Documentaire</option>
+    </select>
+
+    <input type="text" name="cover" placeholder="Image du film" />
+    <input type="text" name="trailer" placeholder="URL du trailer" />
+    <input type="text" name="trailer" placeholder="URL du trailer" />
+
+    <select name="age_min">
+      <option value="0">Tout public</option>
+      <option value="10">Interdit aux moins de 10 ans</option>
+      <option value="12">Interdit aux moins de 12 ans</option>
+      <option value="16">Interdit aux moins de 16 ans</option>
+      <option value="18">Interdit aux moins de 18 ans</option>
+
+      <input type="button" onclick="{{handler}}" value="addmovies" name="todo">
+    </select>
+  </form>
+</div>
