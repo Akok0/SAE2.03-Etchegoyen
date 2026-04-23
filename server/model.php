@@ -38,6 +38,7 @@ function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {
     $sql = "INSERT INTO Movie (name, director, year, length, description, id_category, image, trailer, min_age) 
             VALUES (:t, :r, :y, :dur, :des, :cat, :img, :url, :age)";
     $stmt = $cnx->prepare($sql);
+
     $stmt->bindParam(':t', $t);
     $stmt->bindParam(':r', $r);
     $stmt->bindParam(':y', $y);
@@ -47,6 +48,9 @@ function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {
     $stmt->bindParam(':img', $img);
     $stmt->bindParam(':url', $url);
     $stmt->bindParam(':age', $age);
-    
-    return $stmt->execute();
+
+    $stmt->execute();
+
+    $res = $stmt->rowCount();
+    return $res;
 }

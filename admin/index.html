@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <title>SAE2.03 ADMIN</title>
@@ -18,15 +18,17 @@
       window.C = {};
 
       C.handlerAddMovie = async function () {
-        let form = document.querySelector(".addMenu__form")
+        let form = document.querySelector(".form__addmovie");
+        if (form.reportValidity()) {
         let fd = new FormData(form);
-        let res = await DataMovie.addmovies();
+        let res = await DataMovie.addmovies(fd);
         V.renderLog(res);
-      }
+        }
+      };
 
       C.start = function () {
         V.renderLog("Démarrage de l'application");
-        V.renderMovieForm("C.handlerAddMovie");
+        V.renderMovieForm("C.handlerAddMovie()");
       };
 
       window.V = {};
