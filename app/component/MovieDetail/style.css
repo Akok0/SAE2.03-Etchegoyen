@@ -3,20 +3,42 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+    color: var(--color-white);
     .detail__close{
         cursor: pointer;
     }
-    .detail__infos{
+    .detail__top{
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
         .detail__img{
             object-fit: 7/9;
             width: 25rem;
             object-fit: contain;
             object-position: top;
         }
-        .detail__info{
+        .detail__infos{
             display: flex;
             flex-direction: column;
+            justify-content: space-evenly;
+            .detail__info{
+            }
+        }
+        @media(min-width: 44em){
+            flex-direction: row;
+            text-align: start;
+        }
+    }
+    .detail__trailer{
+        width: 100%;
+        aspect-ratio: 16/9;
+        @media(min-width: 44em) {
+            width: 50rem;
         }
     }
 }
+

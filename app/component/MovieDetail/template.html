@@ -1,14 +1,29 @@
 <div class="detail">
     <h1 class="detail__title">{{title}}</h1>
-    <div class="detail__infos">
+    <div class="detail__top">
         <img class="detail__img" src="{{cover}}" alt="{{title}}">
-        <div class="detail__info">
-            <p>{{description}}</p>
-            <h2>{{realisateur}}</h2>
-            <p>{{year}}</p>
-            <p>{{categorie}}</p>
-            <p>{{age}}</p>
-        </div>
+        <ul class="detail__infos">
+            <li class="detail__info">
+                <h2>description</h2>
+                <p>{{description}}</p>
+            </li>
+            <li class="detail__info">
+                <h2>realisateur</h2>
+                <p>{{realisateur}}</p>
+            </li>
+            <li class="detail__info">
+                <h2>Année de sortie</h2>
+                <p>{{year}}</p>
+            </li>
+            <li class="detail__info">
+                <h2>categorie</h2>
+                <p>{{categorie}}</p>
+            </li>
+            <li class="detail__info">
+                <h2>Age linimum</h2>
+                <p>{{age}}</p>
+            </li>
+        </ul>
     </div>
-    <iframe width="560" height="315" src="{{trailer}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe class="detail__trailer" src="{{trailer}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
