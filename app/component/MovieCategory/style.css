@@ -1,0 +1,8 @@
+.movieCategory{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    color: var(--color-white);
+}

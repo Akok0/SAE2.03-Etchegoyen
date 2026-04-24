@@ -20,17 +20,12 @@ define("DBPWD", "etchegoyen3");
 
 
 function getAllMovies(){
-    // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    // Requête SQL pour récupérer le menu avec des paramètres
-    $sql = "select id, name, image from Movie";
-    // Prépare la requête SQL
+    $sql = "select Movie.id,  Movie.name,  Movie.image, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
-    // Exécute la requête SQL
     $stmt->execute();
-    // Récupère les résultats de la requête sous forme d'objets
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
-    return $res; // Retourne les résultats
+    return $res;
 }
 
 function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {

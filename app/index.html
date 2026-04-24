@@ -17,6 +17,7 @@
       import { NavBar } from "./component/NavBar/script.js";
       import { Movies } from "./component/Movies/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
 
       let movies = await DataMovie.requestMovies();
       // Controleur
@@ -36,12 +37,13 @@
         }
       };
       C.handlerCloseMovieDetail = function (id) {
-        V.renderMovies(movies, "C.handlerMovieDetail");
+        V.renderMoviesCategory(movies, "C.handlerMovieDetail");
       };
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()", "C.handlerCloseMovieDetail()");
-        V.renderMovies(movies, "C.handlerMovieDetail");
+        V.renderMoviesCategory(movies,  "C.handlerMovieDetail");
+        
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -65,6 +67,16 @@
       V.renderMovieDetail = function (data) {
         let content = document.querySelector("#content");
         content.innerHTML = MovieDetail.format(data);
+      };
+      V.renderMoviesCategory = function (groupedData, handler) {
+          let content = document.querySelector("#content");
+          let html = "";
+          for (let category in groupedData) {
+              let moviesInCat = groupedData[category];
+              let moviesHtml = Movies.format(moviesInCat, handler);
+              html += MovieCategory.format(category, moviesHtml);
+          }
+          content.innerHTML = html;
       };
 
       C.start(); // Démarre l'application

@@ -25,6 +25,18 @@ function readMoviesController(){
     $movies = getAllMovies();
     return $movies;
 }
+function readMoviesByCategoryController(){
+    $movies = getAllMovies();
+    $category = [];
+    foreach($movies as $movie){
+        $label = $movie->label;
+        if (!isset($category[$label])){
+            $category[$label] = [];
+        }
+        $category[$label][] = $movie;
+    }
+    return $category;
+}
 function addMoviesController(){
     $t = $_REQUEST['titre'];
     $r = $_REQUEST['realisateur'];

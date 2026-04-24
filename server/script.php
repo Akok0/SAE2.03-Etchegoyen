@@ -53,7 +53,7 @@ if ( isset($_REQUEST['todo']) ){
   switch($todo){
 
     case 'readmovies':
-      $data = readMoviesController();
+      $data = readMoviesByCategoryController();
       break;
     case 'addmovies':
       $data = addMoviesController();
