@@ -1,0 +1,22 @@
+.detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .detail__close{
+        cursor: pointer;
+    }
+    .detail__infos{
+        display: flex;
+        .detail__img{
+            object-fit: 7/9;
+            width: 25rem;
+            object-fit: contain;
+            object-position: top;
+        }
+        .detail__info{
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

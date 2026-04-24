@@ -5,7 +5,9 @@
   padding: 1rem 3rem;
   color: var(--color-fg);
   background-color: var(--color-bg);
-
+  .navbar__list{
+    display: flex;
+  }
   .navbar__item {
     --_offset: 0.2rem;
     padding: 0.5rem 1rem;

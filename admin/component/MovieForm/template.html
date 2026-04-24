@@ -3,15 +3,12 @@
 
   <form class="form__addmovie">
     <input class="addmovie__input" type="text" name="titre" placeholder="Titre du film" required/>
-    <input class="addmovie__input" type="text" name="realisateur" placeholder="Réalisateur du film" required />
-    <input class="addmovie__input" type="number" name="annee" value="2026" max="2026" required />
-    <input class="addmovie__input" type="number" name="duree" placeholder="temps"required />
-    <textarea class="addmovie__input"
-      name="description"
-      placeholder="Description ou synopsis" required 
-    ></textarea>
+    <input class="addmovie__input" type="text" name="realisateur" placeholder="Réalisateur du film" required pattern="[^0-9]*" title="Numbers are not allowed"/>
+    <input class="addmovie__input" type="number" name="annee" value="2026" min="1895" max="2026" required />
+    <input class="addmovie__input" type="number" name="duree" placeholder="temps" min="1" required/>
+    <textarea class="addmovie__input" name="description" placeholder="Description ou synopsis" required></textarea>
 
-    <select name="categorie" required >
+    <select name="categorie" required>
       <option value="1">Action</option>
       <option value="2">Comédie</option>
       <option value="3">Drame</option>
@@ -24,8 +21,8 @@
       <option value="10">Documentaire</option>
     </select>
 
-    <input class="addmovie__input" type="text" name="cover" placeholder="Image du film" required />
-    <input class="addmovie__input" type="text" name="trailer" placeholder="URL du trailer" required />
+    <input class="addmovie__input" type="text" name="cover" placeholder="Image du film" required/>
+    <input class="addmovie__input" type="text" name="trailer" placeholder="URL du trailer" required/>
 
     <select name="age_min" required >
       <option value="0">Tout public</option>

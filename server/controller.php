@@ -43,3 +43,11 @@ function addMoviesController(){
         return false;
     }
 }
+
+function readMovieDetailController(){
+if(isset($_REQUEST['id'])){
+        $id = $_REQUEST['id'];
+        return getMovieDetail($id);
+    }
+    return false;
+}

@@ -54,3 +54,13 @@ function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {
     $res = $stmt->rowCount();
     return $res;
 }
+
+function getMovieDetail($id){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "select Category.name as label, Movie.* from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE Movie.id = :id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res;
+}

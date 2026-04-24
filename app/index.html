@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <title>SAE2.03 APP</title>
@@ -16,6 +16,7 @@
       import { DataMovie } from "./data/dataMovie.js";
       import { NavBar } from "./component/NavBar/script.js";
       import { Movies } from "./component/Movies/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
 
       let movies = await DataMovie.requestMovies();
       // Controleur
@@ -25,13 +26,22 @@
 
       C.handlerAbout = function () {
         alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !"
+          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
+      };
+      C.handlerMovieDetail = async function (id) {
+        let selectedMovie= await DataMovie.requestMovieDetails(id);
+        if (selectedMovie) {
+          V.renderMovieDetail(selectedMovie);
+        }
+      };
+      C.handlerCloseMovieDetail = function (id) {
+        V.renderMovies(movies, "C.handlerMovieDetail");
       };
 
       C.start = function () {
-        V.renderNavBar("C.handlerAbout()");
-        V.renderMovies(movies);
+        V.renderNavBar("C.handlerAbout()", "C.handlerCloseMovieDetail()");
+        V.renderMovies(movies, "C.handlerMovieDetail");
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -44,13 +54,17 @@
        * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
        * formaté par le composant NavBar.
        */
-      V.renderNavBar = function (hAbout) {
+      V.renderNavBar = function (hAbout, handler) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout);
+        header.innerHTML = NavBar.format(hAbout, handler);
       };
-      V.renderMovies = function (data) {
+      V.renderMovies = function (data, handler) {
         let content = document.querySelector("#content");
-        content.innerHTML = Movies.format(data);
+        content.innerHTML = Movies.format(data, handler);
+      };
+      V.renderMovieDetail = function (data) {
+        let content = document.querySelector("#content");
+        content.innerHTML = MovieDetail.format(data);
       };
 
       C.start(); // Démarre l'application

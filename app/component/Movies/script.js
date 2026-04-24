@@ -5,7 +5,7 @@ let templateMovie = await templateFileMovie.text();
 
 let Movies = {};
 
-Movies.format = function (data, tab) {
+Movies.format = function (data, handler) {
   let html = template;
   if (data.length == 0) {
     html = html.replace("{{movie}}", "<p class='movies__error'>Aucun film disponible pour le moment.</p>");
@@ -16,7 +16,9 @@ Movies.format = function (data, tab) {
       let card = templateMovie;
       card = card
         .replaceAll("{{name}}", movie.name)
-        .replaceAll("{{image}}", "../server/images/" + movie.image);
+        .replaceAll("{{image}}", "../server/images/" + movie.image)
+        .replaceAll("{{handler}}", handler)
+        .replaceAll("{{id}}", movie.id);
       htmlMovie += card;
     }
     html = html.replace("{{movie}}", htmlMovie);
