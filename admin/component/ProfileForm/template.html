@@ -1,0 +1,15 @@
+<div class="form">
+    <h1>Ajouter un profile utilisateur</h1>
+    <form class="form__addprofile">
+        <input type="text" name="name" placeholder="Nom du profile" required>
+        <input type="text" name="avatar" placeholder="url avatar">
+        <select name="age" required >
+            <option value="0">Tout public</option>
+            <option value="10">10 ans</option>
+            <option value="12">12 ans</option>
+            <option value="16">16 ans</option>
+            <option value="18">18 ans</option>
+        </select>
+        <input class="addprofile__btn" type="button" onclick="{{handler}}" value="addprofile" name="todo">
+    </form>
+</div>

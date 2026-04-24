@@ -1,8 +1,10 @@
-.movieCategory{
+.movieCategory {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* On aligne le titre sur la gauche, c'est plus naturel pour un catalogue */
+    align-items: flex-start; 
     padding: 1rem;
     color: var(--color-white);
+    width: 100%;
+    box-sizing: border-box;
 }

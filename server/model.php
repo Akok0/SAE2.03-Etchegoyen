@@ -21,7 +21,7 @@ define("DBPWD", "etchegoyen3");
 
 function getAllMovies(){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "select Movie.id,  Movie.name,  Movie.image, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category ORDER BY Category.name";
+    $sql = "select Movie.id, Movie.name,  Movie.image, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -41,6 +41,21 @@ function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {
     $stmt->bindParam(':des', $des);
     $stmt->bindParam(':cat', $cat);
     $stmt->bindParam(':img', $img);
+    $stmt->bindParam(':url', $url);
+    $stmt->bindParam(':age', $age);
+
+    $stmt->execute();
+
+    $res = $stmt->rowCount();
+    return $res;
+}
+function addProfile($name, $url, $age) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "INSERT INTO Profile (name, avatar, min_age) 
+            VALUES (:name, :url, :age)";
+    $stmt = $cnx->prepare($sql);
+
+    $stmt->bindParam(':name', $name);
     $stmt->bindParam(':url', $url);
     $stmt->bindParam(':age', $age);
 

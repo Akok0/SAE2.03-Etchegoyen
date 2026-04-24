@@ -63,3 +63,16 @@ if(isset($_REQUEST['id'])){
     }
     return false;
 }
+
+function addProfileController(){
+    $name = $_REQUEST['name'];
+    $url = $_REQUEST['url'];
+    $age = $_REQUEST['age'];
+    $ok = addProfile($name, $url, $age);
+    if($ok != 0){
+        return "Le profile de $name a été ajouté";
+    }
+    else{
+        return false;
+    }
+}
