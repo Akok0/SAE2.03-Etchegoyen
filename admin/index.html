@@ -18,6 +18,8 @@
       import { DataProfile } from "./data/dataProfile.js";
       import { ProfileForm } from "./component/ProfileForm/script.js";
 
+      let movies = await DataMovie.requestCategories();
+
       window.C = {};
 
       C.handlerAddMovie = async function () {
@@ -25,10 +27,11 @@
         if (form.reportValidity()) {
         let fd = new FormData(form);
         let res = await DataMovie.addmovies(fd);
-        V.renderLog("il y a une erreur dans le formulaire");
+        V.renderLog(res);
+        
       }
       else{
-          V.renderLog(res);
+          V.renderLog("il y a une erreur dans le formulaire");
       }
       };
       C.handlerAddProfile = async function () {
@@ -45,7 +48,7 @@
 
       C.start = function () {
         V.renderLog("Démarrage de l'application");
-        V.renderMovieForm("C.handlerAddMovie()");
+        V.renderMovieForm(movies, "C.handlerAddMovie()");
         V.renderProfileForm("C.handlerAddProfile()");
       };
 
@@ -55,9 +58,9 @@
         let content = document.querySelector("#log");
         content.innerHTML = Log.format(txt);
       };
-      V.renderMovieForm = function (handler) {
+      V.renderMovieForm = function (data, handler) {
         let content = document.querySelector("#addmenu");
-        content.innerHTML = MovieForm.format(handler);
+        content.innerHTML = MovieForm.format(data, handler);
       };
       V.renderProfileForm = function (handler) {
         let content = document.querySelector("#addprofile");

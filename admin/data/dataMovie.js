@@ -3,6 +3,12 @@ let HOST_URL = "https://mmi.unilim.fr/~etchegoyen3/SAE2.03-Etchegoyen"; // CHANG
 
 let DataMovie = {};
 
+DataMovie.requestCategories = async function(){
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=readcategory");
+    let data = await answer.json();
+    return data;
+}
+
 DataMovie.addmovies = async function(fdata){
     let config = {
         method: "POST",

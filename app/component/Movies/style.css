@@ -4,6 +4,7 @@
     display: flex;
     gap: 2rem;
     scroll-snap-type: x mandatory;
+    scrollbar-color: var(--color-white) transparent;
     padding: 1rem;
 
     .movies__error {
@@ -43,5 +44,9 @@
             box-sizing: border-box;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
         }
+        @media(min-width: 64em){
+            flex: 0 0 20rem; 
+        }
     }
 }
+

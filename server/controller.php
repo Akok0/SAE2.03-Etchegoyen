@@ -25,6 +25,10 @@ function readMoviesController(){
     $movies = getAllMovies();
     return $movies;
 }
+function readCategoryController(){
+    $category = getAllCategories();
+    return $category;
+}
 function readMoviesByCategoryController(){
     $movies = getAllMovies();
     $category = [];
@@ -66,7 +70,7 @@ if(isset($_REQUEST['id'])){
 
 function addProfileController(){
     $name = $_REQUEST['name'];
-    $url = $_REQUEST['url'];
+    $url = $_REQUEST['avatar'];
     $age = $_REQUEST['age'];
     $ok = addProfile($name, $url, $age);
     if($ok != 0){
