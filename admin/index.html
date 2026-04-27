@@ -34,6 +34,7 @@
           V.renderLog("il y a une erreur dans le formulaire");
       }
       };
+
       C.handlerAddProfile = async function () {
         let form = document.querySelector(".form__addprofile");
         if (form.reportValidity()) {
@@ -58,10 +59,12 @@
         let content = document.querySelector("#log");
         content.innerHTML = Log.format(txt);
       };
+
       V.renderMovieForm = function (data, handler) {
         let content = document.querySelector("#addmenu");
         content.innerHTML = MovieForm.format(data, handler);
       };
+      
       V.renderProfileForm = function (handler) {
         let content = document.querySelector("#addprofile");
         content.innerHTML = ProfileForm.format(handler);

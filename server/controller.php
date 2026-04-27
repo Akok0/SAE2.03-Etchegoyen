@@ -14,30 +14,31 @@
  *  Sinon elle retourne le résultat de l'opération (des données ou un message) à includre dans la réponse HTTP.
  */
 
+use Soap\Url;
+
 /** Inclusion du fichier model.php
  *  Pour pouvoir utiliser les fonctions qui y sont déclarées et qui permettent
  *  de faire des opérations sur les données stockées en base de données.
  */
 require("model.php");
 
-
+/*
 function readMoviesController(){
-    $movies = getAllMovies();
+    $movies = getAllMovies($min_age);
     return $movies;
-}
+}*/
 function readCategoryController(){
     $category = getAllCategories();
     return $category;
 }
 function readMoviesByCategoryController(){
-    $movies = getAllMovies();
+    $min_age = $_REQUEST['min_age'];
+
+    $movies = getAllMovies($min_age);
     $category = [];
-    foreach($movies as $movie){
-        $label = $movie->label;
-        if (!isset($category[$label])){
-            $category[$label] = [];
-        }
-        $category[$label][] = $movie;
+    for ($i = 0; $i < count($movies); $i++) {
+        $label = $movies[$i]->label;
+        $category[$label][] = $movies[$i];
     }
     return $category;
 }
@@ -72,6 +73,11 @@ function addProfileController(){
     $name = $_REQUEST['name'];
     $url = $_REQUEST['avatar'];
     $age = $_REQUEST['age'];
+
+    if(empty($url)){
+        $url = "placeholderProfile.svg";
+    }
+
     $ok = addProfile($name, $url, $age);
     if($ok != 0){
         return "Le profile de $name a été ajouté";
@@ -79,4 +85,12 @@ function addProfileController(){
     else{
         return false;
     }
+}
+
+function readAllProfilesController(){
+    if(isset($_REQUEST['id'])){
+        $id = $_REQUEST['id'];
+        return getProfilesPrefs($id);
+    }
+    return getAllProfiles();
 }

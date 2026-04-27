@@ -2,3 +2,9 @@ body{
     font-family: var(--ff-sans);
     background-color: var(--color-bg);
 }
+.empty-state{
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-size: 1.5rem;
+}

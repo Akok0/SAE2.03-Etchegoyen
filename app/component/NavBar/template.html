@@ -1,6 +1,11 @@
 <nav class="navbar font-sans">
   <ul class="navbar__list">
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
-    <li class="navbar__item" onclick="{{handler}}">Liste</li>
+    <li class="navbar__item" onclick="{{handlerListe}}">Liste</li>
   </ul>
+  <div class="navbar__container">
+    <input type="checkbox" id="navbar__toggle" class="navbar__checkbox"/>
+    <label for="navbar__toggle" class="navbar__label"><img class="navbar__avatar" src="{{avatar}}" alt="avatar"></label>
+    <p class="navbar__logOut" onclick="{{handlerLogOut}}">déconnexion</p>
+  </div>
 </nav>

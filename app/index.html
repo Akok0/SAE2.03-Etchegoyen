@@ -18,8 +18,10 @@
       import { Movies } from "./component/Movies/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
+      import { Profiles } from "./component/Profiles/script.js";
+      import { DataProfile } from "./data/dataProfiles.js";
 
-      let movies = await DataMovie.requestMovies();
+      let profiles = await DataProfile.requestProfiles();
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
@@ -30,20 +32,40 @@
           "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
       };
+
+      C.handlerProfile = async function (id) {
+        let profileSelected = await DataProfile.requestProfiles(id);
+        let movies = await DataMovie.requestMovies(profileSelected.min_age);
+        V.renderNavBar(
+          "C.handlerAbout()",
+          "C.handlerCloseMovieDetail()",
+          "C.handlerLogOut()",
+          profileSelected
+        );
+        console.log("name : " + profileSelected.name);
+        console.log("min_age : " + profileSelected.min_age);
+        V.renderMoviesCategory(movies, "C.handlerMovieDetail");
+      };
+
+      C.handlerLogOut = function () {
+        let logout = document.querySelector("#navbar__toggle");
+        if (logout) logout.checked = false;
+        V.renderProfiles(profiles, "C.handlerProfile");
+      };
+
       C.handlerMovieDetail = async function (id) {
-        let selectedMovie= await DataMovie.requestMovieDetails(id);
+        let selectedMovie = await DataMovie.requestMovieDetails(id);
         if (selectedMovie) {
           V.renderMovieDetail(selectedMovie);
         }
       };
-      C.handlerCloseMovieDetail = function (id) {
+
+      C.handlerCloseMovieDetail = function () {
         V.renderMoviesCategory(movies, "C.handlerMovieDetail");
       };
 
       C.start = function () {
-        V.renderNavBar("C.handlerAbout()", "C.handlerCloseMovieDetail()");
-        V.renderMoviesCategory(movies,  "C.handlerMovieDetail");
-        
+        V.renderProfiles(profiles, "C.handlerProfile");
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -56,27 +78,44 @@
        * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
        * formaté par le composant NavBar.
        */
-      V.renderNavBar = function (hAbout, handler) {
-        let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, handler);
+      V.renderProfiles = function (data, handler) {
+        let header = document.querySelector("#content");
+        header.innerHTML = Profiles.format(data, handler);
       };
+      V.renderNavBar = function (hAbout, handlerListe, handlerLogOut, data) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(hAbout, handlerListe, handlerLogOut, data);
+      };
+
       V.renderMovies = function (data, handler) {
         let content = document.querySelector("#content");
         content.innerHTML = Movies.format(data, handler);
       };
+
       V.renderMovieDetail = function (data) {
         let content = document.querySelector("#content");
         content.innerHTML = MovieDetail.format(data);
       };
+
       V.renderMoviesCategory = function (groupedData, handler) {
-          let content = document.querySelector("#content");
-          let html = "";
+        let content = document.querySelector("#content");
+        let html = "";
+        if(groupedData){
           for (let category in groupedData) {
-              let moviesInCat = groupedData[category];
-              let moviesHtml = Movies.format(moviesInCat, handler);
-              html += MovieCategory.format(category, moviesHtml);
+            let moviesInCat = groupedData[category];
+            let moviesHtml = Movies.format(moviesInCat, handler);
+            html += MovieCategory.format(category, moviesHtml);
           }
+        }
+        if (html == "") {
+            content.innerHTML = `
+                <div class="empty-state">
+                    <p>Aucun film disponible pour votre tranche d'âge.</p>
+                </div>`;
+        }
+        else {
           content.innerHTML = html;
+        }
       };
 
       C.start(); // Démarre l'application
