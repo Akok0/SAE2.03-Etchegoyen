@@ -69,7 +69,7 @@ if(isset($_REQUEST['id'])){
     return false;
 }
 
-function addProfileController(){
+function updateProfileController(){
     $name = $_REQUEST['name'];
     $url = $_REQUEST['avatar'];
     $age = $_REQUEST['age'];
@@ -78,13 +78,26 @@ function addProfileController(){
         $url = "placeholderProfile.svg";
     }
 
-    $ok = addProfile($name, $url, $age);
-    if($ok != 0){
-        return "Le profile de $name a été ajouté";
+    if (!empty($_REQUEST['id'])) {
+        $id = $_REQUEST['id'];
+        $ok = updateProfile($id, $name, $url, $age);
+        if($ok != 0){
+            return "Le profil a été modifié avec succès.";
+        }
+        else{
+            return false;
+        }
     }
     else{
-        return false;
+        $ok = addProfile($name, $url, $age);
+        if($ok != 0){
+            return "Le profile de $name a été ajouté";
+        }
+        else{
+            return false;
+        }
     }
+
 }
 
 function readAllProfilesController(){

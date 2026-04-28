@@ -102,3 +102,16 @@ function getProfilesPrefs($id){
     $res = $stmt->fetch(PDO::FETCH_OBJ);
     return $res;
 }
+
+function updateProfile($id, $name, $url, $age){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "UPDATE Profile SET name = :name, avatar = :url, min_age = :age WHERE id = :id;";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':url', $url);
+    $stmt->bindParam(':age', $age);
+    $stmt->execute();
+    $res = $stmt->rowCount();
+    return $res;
+}

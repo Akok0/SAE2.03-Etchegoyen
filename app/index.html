@@ -18,10 +18,10 @@
       import { Movies } from "./component/Movies/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
-      import { Profiles } from "./component/Profiles/script.js";
       import { DataProfile } from "./data/dataProfiles.js";
 
       let profiles = await DataProfile.requestProfiles();
+      let movies = null;
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
@@ -32,25 +32,21 @@
           "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
       };
-
-      C.handlerProfile = async function (id) {
+      
+      C.handlerSelectProfile = async function () {
+        let selectMenu = document.querySelector(".profiles");
+        let id = selectMenu.value;
+        let content = document.querySelector("#content");
+        if (!id) {
+            content.innerHTML = `
+                <div class="empty-state">
+                    <p>Veuillez sélectionner un profil en haut pour commencer.</p>
+                </div>`;
+            return;
+        }
         let profileSelected = await DataProfile.requestProfiles(id);
-        let movies = await DataMovie.requestMovies(profileSelected.min_age);
-        V.renderNavBar(
-          "C.handlerAbout()",
-          "C.handlerCloseMovieDetail()",
-          "C.handlerLogOut()",
-          profileSelected
-        );
-        console.log("name : " + profileSelected.name);
-        console.log("min_age : " + profileSelected.min_age);
+        movies = await DataMovie.requestMovies(profileSelected.min_age);
         V.renderMoviesCategory(movies, "C.handlerMovieDetail");
-      };
-
-      C.handlerLogOut = function () {
-        let logout = document.querySelector("#navbar__toggle");
-        if (logout) logout.checked = false;
-        V.renderProfiles(profiles, "C.handlerProfile");
       };
 
       C.handlerMovieDetail = async function (id) {
@@ -61,11 +57,20 @@
       };
 
       C.handlerCloseMovieDetail = function () {
-        V.renderMoviesCategory(movies, "C.handlerMovieDetail");
+        C.handlerSelectProfile();
+      };
+      C.handlerLogOut = function () {
+        let selectMenu = document.querySelector(".navbar select[name='id']");
+        if (selectMenu) {
+            selectMenu.value = "";
+        }
+        C.handlerSelectProfile();
       };
 
       C.start = function () {
-        V.renderProfiles(profiles, "C.handlerProfile");
+        V.renderNavBar("C.handlerAbout", "C.handlerCloseMovieDetail()", 
+          "C.handlerSelectProfile()", profiles, "C.handlerLogOut()");
+        C.handlerSelectProfile()
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -82,9 +87,9 @@
         let header = document.querySelector("#content");
         header.innerHTML = Profiles.format(data, handler);
       };
-      V.renderNavBar = function (hAbout, handlerListe, handlerLogOut, data) {
+      V.renderNavBar = function (hAbout, handlerListe, handlerSelect, data, handlerLogOut) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, handlerListe, handlerLogOut, data);
+        header.innerHTML = NavBar.format(hAbout, handlerListe, handlerSelect, data, handlerLogOut);
       };
 
       V.renderMovies = function (data, handler) {

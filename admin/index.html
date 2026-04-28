@@ -18,39 +18,67 @@
       import { DataProfile } from "./data/dataProfile.js";
       import { ProfileForm } from "./component/ProfileForm/script.js";
 
+      let profiles = await DataProfile.requestProfiles();
       let movies = await DataMovie.requestCategories();
 
       window.C = {};
 
-      C.handlerAddMovie = async function () {
+      C.handlerUpdateMovie = async function () {
         let form = document.querySelector(".form__addmovie");
         if (form.reportValidity()) {
-        let fd = new FormData(form);
-        let res = await DataMovie.addmovies(fd);
-        V.renderLog(res);
-        
-      }
-      else{
+          let fd = new FormData(form);
+          let res = await DataMovie.addmovies(fd);
+          V.renderLog(res);
+        } else {
           V.renderLog("il y a une erreur dans le formulaire");
-      }
+        }
       };
 
-      C.handlerAddProfile = async function () {
-        let form = document.querySelector(".form__addprofile");
+      C.handlerUpdateProfile = async function () {
+        let form = document.querySelector(".form__profile");
         if (form.reportValidity()) {
-        let fd = new FormData(form);
-        let res = await DataProfile.addprofile(fd);
-        V.renderLog(res);
-        }
-        else{
+          let fd = new FormData(form);
+          let res = await DataProfile.updateprofiles(fd);
+          V.renderLog(res);
+        } else {
           V.renderLog("il y a une erreur dans le formulaire");
+        }
+      };
+
+
+      C.handlerSelectProfile = async function () {
+        let selectMenu = document.querySelector(
+          ".profiles",
+        );
+          let form = document.querySelector(".form__profile");
+
+        let id = selectMenu.value;
+        if (!id){
+          form.elements.name.value = "";
+            form.elements.avatar.value = "";
+            form.elements.age.value = "0";
+            return;
+          } 
+        let profileToEdit = await DataProfile.requestProfiles(id);
+        if (profileToEdit) {
+          let form = document.querySelector(".form__profile");
+          form.elements.name.value = profileToEdit.name;
+          form.elements.avatar.value = profileToEdit.avatar;
+          form.elements.age.value = profileToEdit.min_age;
+          V.renderLog(
+            "Profil séléctionné : " + profileToEdit.name
+          );
         }
       };
 
       C.start = function () {
         V.renderLog("Démarrage de l'application");
-        V.renderMovieForm(movies, "C.handlerAddMovie()");
-        V.renderProfileForm("C.handlerAddProfile()");
+        V.renderMovieForm(movies, "C.handlerUpdateMovie()");
+        V.renderProfileForm(
+          profiles,
+          "C.handlerUpdateProfile()",
+          "C.handlerSelectProfile()",
+        );
       };
 
       window.V = {};
@@ -64,10 +92,10 @@
         let content = document.querySelector("#addmenu");
         content.innerHTML = MovieForm.format(data, handler);
       };
-      
-      V.renderProfileForm = function (handler) {
+
+      V.renderProfileForm = function (data, handlerUpdate, handlerSelect) {
         let content = document.querySelector("#addprofile");
-        content.innerHTML = ProfileForm.format(handler);
+        content.innerHTML = ProfileForm.format(data, handlerUpdate, handlerSelect);
       };
 
       C.start();

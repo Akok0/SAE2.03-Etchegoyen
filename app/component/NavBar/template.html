@@ -3,9 +3,14 @@
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
     <li class="navbar__item" onclick="{{handlerListe}}">Liste</li>
   </ul>
-  <div class="navbar__container">
-    <input type="checkbox" id="navbar__toggle" class="navbar__checkbox"/>
-    <label for="navbar__toggle" class="navbar__label"><img class="navbar__avatar" src="{{avatar}}" alt="avatar"></label>
-    <p class="navbar__logOut" onclick="{{handlerLogOut}}">déconnexion</p>
-  </div>
+  <ul>
+    <li class="navbar__item" onclick="{{handlerLogOut}}">deconnexion</li>
+    <li class="navbar__item">
+      <select name="id" class="profiles" onchange="{{handlerSelect}}">
+          <option value="">--SELECTIONNER UN PROFIL--</option>
+          {{profiles}}
+      </select>
+    </li>
+  </ul>
+
 </nav>

@@ -1,0 +1,23 @@
+.profiles{
+    display: flex;
+    gap: 1rem;
+    .profiles__profile{
+        border: solid 2px var(--color-fg);
+        background-color: var(--color-bg);
+        color: var(--color-fg);
+        border-radius: 15px;
+        width: 10rem;
+        padding: .5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        .profiles__avatar{
+            height: 3rem;
+            width: 3rem;
+        }
+    }
+    .profiles__profile:hover{
+        scale: 1.1;
+    }
+}

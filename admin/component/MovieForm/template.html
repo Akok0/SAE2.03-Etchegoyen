@@ -8,14 +8,14 @@
     <input class="addmovie__input" type="number" name="duree" placeholder="temps" min="1" required/>
     <textarea class="addmovie__input" name="description" placeholder="Description ou synopsis" required></textarea>
 
-    <select name="categorie" required>
+    <select name="categorie">
       {{option}}
     </select>
 
     <input class="addmovie__input" type="text" name="cover" placeholder="Image du film" required/>
     <input class="addmovie__input" type="text" name="trailer" placeholder="URL du trailer" required/>
 
-    <select name="age_min" required >
+    <select name="age_min">
       <option value="0">Tout public</option>
       <option value="10">Interdit aux moins de 10 ans</option>
       <option value="12">Interdit aux moins de 12 ans</option>
