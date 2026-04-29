@@ -146,3 +146,10 @@ function readHighlightController(){
     $min_age = $_REQUEST['min_age'];
     return getHighlightMovies($min_age);
 }
+
+function readStatsMoviesController(){
+    return getStatsMovies();
+}
+function readStatsUsersController(){
+    return getStatsUsers();
+}

@@ -92,6 +92,14 @@ if ( isset($_REQUEST['todo']) ){
       $data = readHighlightController();
       break;
 
+    case 'readstatsmovies':
+      $data = readStatsMoviesController();
+      break;
+
+    case 'readstatsusers':
+      $data = readStatsUsersController();
+      break;
+
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée

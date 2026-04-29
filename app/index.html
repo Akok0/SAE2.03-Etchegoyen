@@ -50,7 +50,7 @@
         if (!id) {
             content.innerHTML = `
                 <div class="empty-state">
-                    <p>Veuillez sélectionner un profil en haut pour commencer.</p>
+                    <p>Sélectionner pour commencer.</p>
                 </div>`;
             return;
         }
@@ -60,7 +60,6 @@
         movies = await DataMovie.requestMovies(profileSelected.min_age);
         let favorite = await DataFavorite.requestFavorite(id);
         let hightlight = await DataHighlight.requestHighlight(profileSelected.min_age);
-        console.log("Films mis en avant :", hightlight);
         V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
         V.renderMoviesHighlighted("C.handlerMovieDetail", hightlight);
         V.renderMoviesCategory(movies, "C.handlerMovieDetail");

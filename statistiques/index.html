@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <title>SAE2.03 STAT</title>
+    <title>SAE2.03 STATS</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/base.css" />
@@ -14,11 +14,21 @@
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
+      import { DataStats } from "./data/dataStats.js";
+      import { Stats } from "./component/Stats/script.js";
+
+      let statsMovies = await DataStats.requestStatsmovies();
+      let statsUsers = await DataStats.requestStatsusers();
       
       window.C = {};
 
+      C.handlerHome = function (){
+
+      }
+
       C.start = function () {
-        V.renderNavBar("C.handlerAbout()", "C.handlerHome()");
+        V.renderNavBar("C.handlerAbout()");
+        V.renderStats(statsMovies, statsUsers);
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -31,9 +41,13 @@
        * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
        * formaté par le composant NavBar.
        */
-      V.renderNavBar = function (hAbout, handlerHome) {
+      V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, handlerListe, handlerSelect, data, handlerLogOut);
+        header.innerHTML = NavBar.format(hAbout);
+      };
+      V.renderStats = function (datamovies, datausers) {
+        let content = document.querySelector("#content");
+        content.innerHTML = Stats.format(datamovies, datausers);
       };
 
       C.start(); // Démarre l'application
