@@ -88,6 +88,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = readFavoriteController();
       break;
 
+    case 'readhighlight':
+      $data = readHighlightController();
+      break;
+
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée

@@ -170,3 +170,13 @@ function removeFavorite($profile, $movie) {
     $res = $stmt->rowCount();
     return $res;
 }
+
+function getHighlightMovies($min_age){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT Movie.id, Movie.name, Movie.image, Movie.id_category, Movie.description, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND highlight = 1 ORDER BY Category.name";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':min_age', $min_age);
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $res;
+}

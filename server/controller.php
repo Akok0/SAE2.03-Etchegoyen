@@ -141,3 +141,8 @@ function updateFavoriteController(){
     }
     return "Erreur";
 }
+
+function readHighlightController(){
+    $min_age = $_REQUEST['min_age'];
+    return getHighlightMovies($min_age);
+}

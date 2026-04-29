@@ -19,8 +19,10 @@
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
       import { MovieFavorite } from "./component/MovieFavorite/script.js";
+      import { MoviesHighlighted } from "./component/MovieHighlighted/script.js";
       import { DataProfile } from "./data/dataProfiles.js";
       import { DataFavorite } from "./data/dataFavorite.js";
+      import { DataHighlight } from "./data/dataHighlight.js";
 
       let profiles = await DataProfile.requestProfiles();
       let movies = null;
@@ -46,10 +48,14 @@
                 </div>`;
             return;
         }
+        content.innerHTML = "";
         let profileSelected = await DataProfile.requestProfiles(id);
         movies = await DataMovie.requestMovies(profileSelected.min_age);
         let favorite = await DataFavorite.requestFavorite(id);
+        let hightlight = await DataHighlight.requestHighlight(profileSelected.min_age);
+        console.log("Films mis en avant :", hightlight);
         V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
+        V.renderMoviesHighlighted("C.handlerMovieDetail", hightlight);
         V.renderMoviesCategory(movies, "C.handlerMovieDetail");
       };
 
@@ -80,7 +86,7 @@
           favorite.classList.add('detail__favorite--select');
           alert(result);
         }
-        else if (result == "Retiré de la liste des favoris" || "Votre liste de favoris est vide"){
+        else if (result == "Retiré de la liste des favoris" || result == "Votre liste de favoris est vide"){
           favorite.classList.remove('detail__favorite--select');
           alert(result);
         }
@@ -99,7 +105,7 @@
       };
 
       C.start = function () {
-        V.renderNavBar("C.handlerAbout", "C.handlerCloseMovieDetail()", 
+        V.renderNavBar("C.handlerAbout()", "C.handlerCloseMovieDetail()", 
           "C.handlerSelectProfile()", profiles, "C.handlerLogOut()");
         C.handlerSelectProfile()
       };
@@ -133,7 +139,7 @@
         content.innerHTML = MovieDetail.format(data, handlerFavorite);
       };
 
-      V.renderMoviesCategory = function (groupedData, handler, favoriteData = null) {
+      V.renderMoviesCategory = function (groupedData, handler) {
         let content = document.querySelector("#content");
         let html = "";
 
@@ -154,7 +160,7 @@
           content.innerHTML += html;
         }
       };
-      V.renderMoviesFavorite = function (handler, favoriteData = null) {
+      V.renderMoviesFavorite = function (handler, favoriteData) {
         let content = document.querySelector("#content");
         let html = "";
         if (favoriteData && favoriteData.length > 0) {
@@ -162,18 +168,35 @@
           html += MovieFavorite.format(favCards);
         }
         if (html == "") {
-            content.innerHTML = `
+          let data = `
                 <div class="empty-state">
                     <p>Votre liste de favoris est vide.</p>
                 </div>`;
+          html += MovieFavorite.format(data);
         }
-        else {
-          content.innerHTML = html;
+          content.innerHTML += html;
+
+      };
+
+      V.renderMoviesHighlighted = function (handler, highlightedData) {
+        let content = document.querySelector("#content");
+        let html = "";
+        if (highlightedData && highlightedData.length > 0) {
+          let HighlightCards = Movies.format(highlightedData, handler);
+          html += MoviesHighlighted.format(HighlightCards);
         }
+        if (html == "") {
+          let data = `
+                <div class="empty-state">
+                    <p>Aucun film mis en avant pour le moment.</p>
+                </div>`;
+            html += MoviesHighlighted.format(data);
+        }
+        content.innerHTML += html;
+
       };
 
       C.start(); // Démarre l'application
     </script>
   </body>
 </html>
-<script type="module"></script>
