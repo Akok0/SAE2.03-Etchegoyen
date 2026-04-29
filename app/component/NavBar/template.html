@@ -3,14 +3,15 @@
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
     <li class="navbar__item" onclick="{{handlerListe}}">Liste</li>
   </ul>
-  <ul>
-    <li class="navbar__item" onclick="{{handlerLogOut}}">deconnexion</li>
-    <li class="navbar__item">
-      <select name="id" class="profiles" onchange="{{handlerSelect}}">
-          <option value="">--SELECTIONNER UN PROFIL--</option>
-          {{profiles}}
-      </select>
-    </li>
+  <ul class="navbar__list">
+      <li class="navbar__item dropdown">
+          <button class="dropdown__btn" onclick="{{handlerDropdown}}">Changer de profil</button>
+          
+          <ul class="dropdown__content">
+              {{profiles}}
+          </ul>
+      </li>
+      <li class="navbar__item navbar__link" onclick="{{handlerLogOut}}">Déconnexion</li>
   </ul>
 
 </nav>

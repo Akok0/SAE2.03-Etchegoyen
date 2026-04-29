@@ -7,12 +7,11 @@ let templateProfile = await templateFileProfile.text();
 
 let NavBar = {};
 
-NavBar.format = function (hAbout, handlerListe, handlerSelect, data, handlerLogOut, handlerDropdown) {
+NavBar.format = function (hAbout, handlerListe, handlerSelect, data, handlerLogOut) {
   let html = template;
 
   html = html
     .replace("{{hAbout}}", hAbout)
-    .replaceAll("{{handlerDropdown}}", handlerDropdown)
     .replaceAll("{{handlerListe}}", handlerListe)
     .replaceAll("{{handlerSelect}}", handlerSelect)
     .replaceAll("{{handlerLogOut}}", handlerLogOut);
@@ -20,10 +19,8 @@ NavBar.format = function (hAbout, handlerListe, handlerSelect, data, handlerLogO
   for (let profileData of data) {
     let profile = templateProfile;
     profile = profile
-      .replaceAll("{{id}}", profileData.id)
-      .replaceAll("{{name}}", profileData.name)
-      .replaceAll("{{avatar}}", "../server/images/" + profileData.avatar)
-      .replaceAll("{{handler}}", handlerSelect);
+      .replace("{{id}}", profileData.id)
+      .replace("{{name}}", profileData.name);
     htmlProfile += profile;
   }
   html = html.replace("{{profiles}}", htmlProfile);

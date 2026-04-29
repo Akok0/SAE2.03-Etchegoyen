@@ -1,0 +1,16 @@
+<nav class="navbar font-sans">
+  <ul class="navbar__list">
+    <li class="navbar__item" onclick="{{hAbout}}">About</li>
+    <li class="navbar__item" onclick="{{handlerListe}}">Liste</li>
+  </ul>
+  <ul>
+    <li class="navbar__item" onclick="{{handlerLogOut}}">deconnexion</li>
+    <li class="navbar__item">
+      <select name="id" class="profiles" onchange="{{handlerSelect}}">
+          <option value="">--SELECTIONNER UN PROFIL--</option>
+          {{profiles}}
+      </select>
+    </li>
+  </ul>
+
+</nav>

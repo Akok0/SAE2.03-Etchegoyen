@@ -1,0 +1,8 @@
+@layer reset, global, variables, components, utilities;
+
+@import "./reset.css" layer(reset);
+@import "./global.css" layer(global);
+@import "./variables.css" layer(variables);
+@import "./utilities.css" layer(utilities);
+
+@import "../component/NavBar/style.css" layer(components);

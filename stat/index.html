@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 STAT</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/base.css" />
+  </head>
+
+  <body>
+    <header id="header"></header>
+
+    <section id="content"></section>
+
+    <script type="module">
+      import { NavBar } from "./component/NavBar/script.js";
+      
+      window.C = {};
+
+      C.start = function () {
+        V.renderNavBar("C.handlerAbout()", "C.handlerHome()");
+      };
+
+      // Vue (contient tout ce qui est relatif à l'affichage)
+      window.V = {};
+
+      /**
+       * V.renderNavBar
+       *
+       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
+       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
+       * formaté par le composant NavBar.
+       */
+      V.renderNavBar = function (hAbout, handlerHome) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(hAbout, handlerListe, handlerSelect, data, handlerLogOut);
+      };
+
+      C.start(); // Démarre l'application
+    </script>
+  </body>
+</html>
