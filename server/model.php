@@ -195,44 +195,65 @@ function getHighlightMovies($min_age)
     return $res;
 }
 
-function getStatsMovies()
+function getNbMovies()
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "(SELECT 'Total des films' AS name, COUNT(*) AS value FROM Movie)
-            UNION
-            (SELECT 'Film le plus favori' AS name, Movie.name AS value
+    $sql = "SELECT 'Total des films' AS name, COUNT(*) AS value FROM Movie";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res;
+}
+
+function getMostFavoritedMovie()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Film le plus favori' AS name, Movie.name AS value
             FROM Favorite 
             JOIN Movie ON Favorite.id_movie = Movie.id 
             GROUP BY Movie.id 
             ORDER BY COUNT(Favorite.id_movie) DESC 
-            LIMIT 1)
-            UNION
-            (SELECT 'Catégorie la plus populaire' AS name, Category.name AS value 
+            LIMIT 1";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getMostPopularCategory()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Catégorie la plus populaire' AS name, Category.name AS value 
             FROM Favorite 
             JOIN Movie ON Favorite.id_movie = Movie.id 
             JOIN Category ON Movie.id_category = Category.id 
             GROUP BY Category.id 
             ORDER BY COUNT(Favorite.id_movie) DESC 
-            LIMIT 1)";
+            LIMIT 1";
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
-    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
-    return $res;
+    return $stmt->fetch(PDO::FETCH_OBJ);
 }
-function getStatsUsers()
+
+function getNbProfiles()
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "(SELECT 'Total des profils créés' AS name, COUNT(*) +0 AS value FROM Profile)
-            UNION
-            (SELECT 'Moyenne de favoris par profil' AS name, ROUND(AVG(fav_count)) AS value 
+    $sql = "SELECT 'Total des profils créés' AS name, COUNT(*) AS value FROM Profile";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getAvgFavorites()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Moyenne de favoris par profil' AS name, ROUND(AVG(fav_count)) AS value 
             FROM (
                 SELECT COUNT(Favorite.id_movie) AS fav_count 
                 FROM Profile 
                 LEFT JOIN Favorite ON Favorite.id_profile = Profile.id 
                 GROUP BY Profile.id
-            ) AS avgResult)";
+            ) AS avgResult";
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
-    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
-    return $res;
+    return $stmt->fetch(PDO::FETCH_OBJ);
 }
