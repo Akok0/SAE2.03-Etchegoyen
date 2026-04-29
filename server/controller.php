@@ -130,11 +130,7 @@ function updateFavoriteController(){
     if ($verification > 0){
         $ok = removeFavorite($profile, $movie);
         if($ok != 0){
-            $liste = getAllFavorite($profile);
-            if (empty($liste)){
-                return "Votre liste de favoris est vide";
-            }
-        return "Retiré de la liste des favoris";
+            return "Retiré de la liste des favoris";
         }
         return "Erreur";
     }

@@ -49,7 +49,8 @@
         let profileSelected = await DataProfile.requestProfiles(id);
         movies = await DataMovie.requestMovies(profileSelected.min_age);
         let favorite = await DataFavorite.requestFavorite(id);
-        V.renderMoviesCategory(movies, "C.handlerMovieDetail", favorite);
+        V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
+        V.renderMoviesCategory(movies, "C.handlerMovieDetail");
       };
 
       C.handlerMovieDetail = async function (id) {
@@ -136,11 +137,6 @@
         let content = document.querySelector("#content");
         let html = "";
 
-        if (favoriteData && favoriteData.length > 0) {
-          let favCards = Movies.format(favoriteData, handler);
-          html += MovieFavorite.format(favCards);
-        }
-
         if(groupedData){
           for (let category in groupedData) {
             let moviesInCat = groupedData[category];
@@ -149,9 +145,26 @@
           }
         }
         if (html == "") {
-            content.innerHTML = `
+            content.innerHTML += `
                 <div class="empty-state">
                     <p>Aucun film disponible pour votre tranche d'âge.</p>
+                </div>`;
+        }
+        else {
+          content.innerHTML += html;
+        }
+      };
+      V.renderMoviesFavorite = function (handler, favoriteData = null) {
+        let content = document.querySelector("#content");
+        let html = "";
+        if (favoriteData && favoriteData.length > 0) {
+          let favCards = Movies.format(favoriteData, handler);
+          html += MovieFavorite.format(favCards);
+        }
+        if (html == "") {
+            content.innerHTML = `
+                <div class="empty-state">
+                    <p>Votre liste de favoris est vide.</p>
                 </div>`;
         }
         else {

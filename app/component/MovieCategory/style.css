@@ -1,7 +1,6 @@
 .movieCategory {
     display: flex;
     flex-direction: column;
-    /* On aligne le titre sur la gauche, c'est plus naturel pour un catalogue */
     align-items: flex-start; 
     padding: 1rem;
     color: var(--color-white);
