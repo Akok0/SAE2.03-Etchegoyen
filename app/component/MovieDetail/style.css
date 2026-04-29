@@ -31,6 +31,15 @@
                 flex-direction: column;
                 gap: 0rem;
             }
+            .detail__favorite{
+                width: 2rem;
+                height: 2rem;
+                stroke: var(--color-white);
+                cursor: pointer;
+            }
+            .detail__favorite--select{
+                fill: var(--color-white);
+            }
         }
         @media(min-width: 44em){
             flex-direction: row;

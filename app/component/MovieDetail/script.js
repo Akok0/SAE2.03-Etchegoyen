@@ -3,7 +3,7 @@ let template = await templateFile.text();
 
 let MovieDetail = {};
 
-MovieDetail.format = function (data) {
+MovieDetail.format = function (data, handlerFavorite) {
   let html = template;
   html = html.replaceAll("{{title}}", data.name)
   .replaceAll("{{cover}}", "../server/images/" + data.image)
@@ -12,7 +12,9 @@ MovieDetail.format = function (data) {
   .replaceAll("{{categorie}}", data.label)
   .replaceAll("{{description}}", data.description)
   .replaceAll("{{age}}", data.min_age)
-  .replaceAll("{{trailer}}", data.trailer);
+  .replaceAll("{{trailer}}", data.trailer)
+
+  .replaceAll("{{handlerFavorite}}", handlerFavorite);
 
   return html
 };

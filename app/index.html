@@ -18,7 +18,9 @@
       import { Movies } from "./component/Movies/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
+      import { MovieFavorite } from "./component/MovieFavorite/script.js";
       import { DataProfile } from "./data/dataProfiles.js";
+      import { DataFavorite } from "./data/dataFavorite.js";
 
       let profiles = await DataProfile.requestProfiles();
       let movies = null;
@@ -46,19 +48,47 @@
         }
         let profileSelected = await DataProfile.requestProfiles(id);
         movies = await DataMovie.requestMovies(profileSelected.min_age);
-        V.renderMoviesCategory(movies, "C.handlerMovieDetail");
+        let favorite = await DataFavorite.requestFavorite(id);
+        V.renderMoviesCategory(movies, "C.handlerMovieDetail", favorite);
       };
 
       C.handlerMovieDetail = async function (id) {
-        let selectedMovie = await DataMovie.requestMovieDetails(id);
+        let idProfile = document.querySelector(".profiles").value;
+        let selectedMovie = await DataMovie.requestMovieDetails(id, idProfile);
+
         if (selectedMovie) {
-          V.renderMovieDetail(selectedMovie);
+          V.renderMovieDetail(selectedMovie, `C.handlerAddFavorite(${idProfile}, ${id})`);
+          if (selectedMovie.isFavorite == true){
+            let favorite = document.querySelector(".detail__favorite")
+            if (favorite){
+              favorite.classList.add("detail__favorite--select")
+            }
+          }
         }
       };
 
       C.handlerCloseMovieDetail = function () {
         C.handlerSelectProfile();
       };
+
+      C.handlerAddFavorite = async function (profile, movie) {
+        let result = await DataFavorite.updatefavorite(profile, movie)
+        let favorite = document.querySelector(".detail__favorite");
+
+        if (result == "Ajouté à la liste des favoris"){
+          favorite.classList.add('detail__favorite--select');
+          alert(result);
+        }
+        else if (result == "Retiré de la liste des favoris" || "Votre liste de favoris est vide"){
+          favorite.classList.remove('detail__favorite--select');
+          alert(result);
+        }
+        else {
+          alert(result)
+        }
+
+      };
+
       C.handlerLogOut = function () {
         let selectMenu = document.querySelector(".navbar select[name='id']");
         if (selectMenu) {
@@ -97,14 +127,20 @@
         content.innerHTML = Movies.format(data, handler);
       };
 
-      V.renderMovieDetail = function (data) {
+      V.renderMovieDetail = function (data, handlerFavorite) {
         let content = document.querySelector("#content");
-        content.innerHTML = MovieDetail.format(data);
+        content.innerHTML = MovieDetail.format(data, handlerFavorite);
       };
 
-      V.renderMoviesCategory = function (groupedData, handler) {
+      V.renderMoviesCategory = function (groupedData, handler, favoriteData = null) {
         let content = document.querySelector("#content");
         let html = "";
+
+        if (favoriteData && favoriteData.length > 0) {
+          let favCards = Movies.format(favoriteData, handler);
+          html += MovieFavorite.format(favCards);
+        }
+
         if(groupedData){
           for (let category in groupedData) {
             let moviesInCat = groupedData[category];

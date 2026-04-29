@@ -64,7 +64,16 @@ function addMoviesController(){
 function readMovieDetailController(){
 if(isset($_REQUEST['id'])){
         $id = $_REQUEST['id'];
-        return getMovieDetail($id);
+        $id_profile = $_REQUEST['profile'];
+        $movie = getMovieDetail($id);
+        $favori = readFavorite($id_profile, $id);
+        if ($favori > 0){
+            $movie->isFavorite = true;
+        }
+        else{
+            $movie->isFavorite = false;
+        }
+        return $movie;
     }
     return false;
 }
@@ -81,7 +90,7 @@ function updateProfileController(){
     if (!empty($_REQUEST['id'])) {
         $id = $_REQUEST['id'];
         $ok = updateProfile($id, $name, $url, $age);
-        if($ok != 0){
+        if($ok !== false){
             return "Le profil a été modifié avec succès.";
         }
         else{
@@ -90,7 +99,7 @@ function updateProfileController(){
     }
     else{
         $ok = addProfile($name, $url, $age);
-        if($ok != 0){
+        if($ok !==false){
             return "Le profile de $name a été ajouté";
         }
         else{
@@ -106,4 +115,33 @@ function readAllProfilesController(){
         return getProfilesPrefs($id);
     }
     return getAllProfiles();
+}
+
+function readFavoriteController(){
+    $profile = $_REQUEST['profile'];
+    return getAllFavorite($profile);
+}
+
+function updateFavoriteController(){
+    $profile = $_REQUEST['profile'];
+    $movie = $_REQUEST['movie'];
+    $verification = readFavorite($profile, $movie);
+    
+    if ($verification > 0){
+        $ok = removeFavorite($profile, $movie);
+        if($ok != 0){
+            $liste = getAllFavorite($profile);
+            if (empty($liste)){
+                return "Votre liste de favoris est vide";
+            }
+        return "Retiré de la liste des favoris";
+        }
+        return "Erreur";
+    }
+    $ok = addFavorite($profile, $movie);
+    
+    if($ok != 0){
+        return "Ajouté à la liste des favoris";
+    }
+    return "Erreur";
 }

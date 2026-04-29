@@ -1,0 +1,9 @@
+.movieFavorite {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    padding: 1rem;
+    color: var(--color-white);
+    width: 100%;
+    box-sizing: border-box;
+}
