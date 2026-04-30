@@ -261,7 +261,7 @@ function getAvgFavorites()
 function getSearchmovies($min_age, $searchValue)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Category.name AS label FROM Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND LOWER(Movie.name) LIKE :searchvalue ORDER BY Category.name";
+    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Category.name AS label FROM Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND LOWER(Movie.name) LIKE :searchvalue OR LOWER(Category.name) LIKE :searchvalue ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
     $search = "%" . strtolower($searchValue) . "%";
     $stmt->bindParam(':min_age', $min_age);

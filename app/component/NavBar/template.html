@@ -1,10 +1,9 @@
 <nav class="navbar font-sans">
   <ul class="navbar__list">
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
-    <li class="navbar__item" onclick="{{handlerListe}}">Liste</li>
     <a class="navbar__item" href="../statistiques/index.html">Statistiques</a>
   </ul>
-  <input class="navbar__searchbar" type="search" name="search" placeholder="Chercher un film" onkeyup="{{handlerSearch}}" onsearch="{{handlerSearch}}">
+  <input class="navbar__searchbar" type="search" name="search" placeholder="Chercher un film ou une catégories" onkeyup="{{handlerSearch}}" onsearch="{{handlerSearch}}">
   <ul class="navbar__list">
       <li class="navbar__item dropdown">
           <button class="dropdown__btn" onclick="{{handlerDropdown}}">Changer de profil</button>

@@ -1,9 +1,17 @@
 .moviesHighligh {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
-    padding: 1rem;
-    color: var(--color-white);
     width: 100%;
     box-sizing: border-box;
+    margin-bottom: 2rem; 
+    .moviesHighligh__title {
+        color: var(--color-fg);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        padding-left: 1rem; 
+        margin-bottom: 0.5rem;        
+        text-transform: capitalize; 
+        letter-spacing: 1px;
+    }
 }

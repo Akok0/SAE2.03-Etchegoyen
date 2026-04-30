@@ -2,14 +2,15 @@
     width: 100%;
     overflow-x: auto;
     display: flex;
-    gap: 2rem;
-    scroll-snap-type: x mandatory;
+    gap: .5rem;
+    scroll-snap-type:x right;
     scrollbar-color: var(--color-white) transparent;
     padding: 1rem;
 
     .movies__error {
         font-size: 2rem;
         font-weight: 900;
+        margin: auto;
         color: red;
         text-align: center;
         width: 100%;
@@ -18,11 +19,11 @@
     .movie {
         scroll-snap-align: start; 
         position: relative;
-        flex: 0 0 15rem; 
-        aspect-ratio: 7/9;
+        flex: 0 0 13rem; 
+        aspect-ratio: 7/11;
         overflow: hidden;
-        border-radius: 15px;
-        box-shadow: 0px 0px 5px 2px var(--color-white);
+        border-radius: 5px;
+        box-shadow: 0px 0px 2px 0px rgb(0, 0, 0);
         cursor: pointer;
 
         .movie__cover {
@@ -38,14 +39,11 @@
             left: 0;
             width: 100%;
             margin: 0;
-            padding: 3rem 1rem 1rem 1rem;
+            padding: 10rem 1rem 1rem 1rem;
             color: var(--color-white);
-            font-size: 1.2rem;
+            font-size: 1rem;
             box-sizing: border-box;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
-        }
-        @media(min-width: 64em){
-            flex: 0 0 20rem; 
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.945), rgba(0, 0, 0, 0));
         }
     }
 }

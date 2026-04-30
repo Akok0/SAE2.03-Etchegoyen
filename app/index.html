@@ -53,7 +53,7 @@
         let content = document.querySelector("#content");
         if (!id) {
           content.innerHTML = `
-                <div class="empty-state">
+                <div class="no-profile">
                     <p>Sélectionner pour commencer.</p>
                 </div>`;
           return;
@@ -83,6 +83,7 @@
           V.renderMovieDetail(
             selectedMovie,
             `C.handlerAddFavorite(${idProfile}, ${id})`,
+          "C.handlerCloseMovieDetail()"
           );
           if (selectedMovie.isFavorite == true) {
             let favorite = document.querySelector(".detail__favorite");
@@ -152,7 +153,6 @@
       C.start = function () {
         V.renderNavBar(
           "C.handlerAbout()",
-          "C.handlerCloseMovieDetail()",
           "C.handlerSelectProfile",
           profiles,
           "C.handlerLogOut()",
@@ -178,7 +178,6 @@
       };
       V.renderNavBar = function (
         hAbout,
-        handlerListe,
         handlerSelect,
         data,
         handlerLogOut,
@@ -188,7 +187,6 @@
         let header = document.querySelector("#header");
         header.innerHTML = NavBar.format(
           hAbout,
-          handlerListe,
           handlerSelect,
           data,
           handlerLogOut,
@@ -202,9 +200,9 @@
         content.innerHTML = Movies.format(data, handler, error);
       };
 
-      V.renderMovieDetail = function (data, handlerFavorite) {
+      V.renderMovieDetail = function (data, handlerFavorite, handlerClose) {
         let content = document.querySelector("#content");
-        content.innerHTML = MovieDetail.format(data, handlerFavorite);
+        content.innerHTML = MovieDetail.format(data, handlerFavorite, handlerClose);
       };
 
       V.renderMoviesCategory = function (groupedData, handler) {

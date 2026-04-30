@@ -6,6 +6,42 @@
     <title>Portail SAe2.03</title>
 </head>
 <body>
-    
+    <style>
+.liste {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .liste__item {
+        width: 5rem;
+        padding: 1rem 3rem;
+        color: white;
+        font-size: 1.2rem;
+        .navbar__item{
+            background-color: rgb(0, 0, 0);
+
+        }
+    }
+}
+
+    </style>
+    <ul class="liste">
+        <li class="liste-item">
+            <a class="navbar__item" href="app/index.html">App</a>
+        </li>
+        <li class="liste-item">
+            <a class="navbar__item" href="admin/index.html">Admin</a>
+        </li>
+        <li class="liste-item">
+            <a class="navbar__item" href="statistiques/index.html">Stats</a>
+        </li>
+    </ul>
 </body>
 </html>

@@ -7,13 +7,12 @@ let templateProfile = await templateFileProfile.text();
 
 let NavBar = {};
 
-NavBar.format = function (hAbout, handlerListe, handlerSelect, data, handlerLogOut, handlerDropdown, handlerSearch) {
+NavBar.format = function (hAbout, handlerSelect, data, handlerLogOut, handlerDropdown, handlerSearch) {
   let html = template;
 
   html = html
     .replace("{{hAbout}}", hAbout)
     .replaceAll("{{handlerDropdown}}", handlerDropdown)
-    .replaceAll("{{handlerListe}}", handlerListe)
     .replaceAll("{{handlerSelect}}", handlerSelect)
     .replaceAll("{{handlerLogOut}}", handlerLogOut)
     .replaceAll("{{handlerSearch}}", handlerSearch);
