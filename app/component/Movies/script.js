@@ -8,15 +8,14 @@ let Movies = {};
 Movies.format = function (data, handler, error) {
   let html = template;
   let message = "";
-
-  if (data.error) {
+  if (data && data.error) {
     message = data.error;
   } else {
     message = "Aucun film disponible pour le moment.";
-}
-  if (data.length == 0) {
-    html = html.replace("{{movie}}", "<p class='movies__error'>"+ message +"</p>");
   }
+  if (!data || data.error || data.length == 0) {
+    html = html.replace("{{movie}}", "<p class='movies__error'>" + message + "</p>");
+  } 
   else {
     let htmlMovie = "";
     for (let movie of data) {

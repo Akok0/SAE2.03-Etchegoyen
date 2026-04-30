@@ -32,9 +32,11 @@ function readCategoryController(){
     return $category;
 }
 function readMoviesByCategoryController(){
-    $min_age = $_REQUEST['min_age'];
-
+$min_age = $_REQUEST['min_age'];
     $movies = getAllMovies($min_age);
+    if (empty($movies)) {
+        return ["error" => "Aucun film disponible pour votre tranche d'âge."];
+    }
     $category = [];
     for ($i = 0; $i < count($movies); $i++) {
         $label = $movies[$i]->label;
@@ -119,7 +121,12 @@ function readAllProfilesController(){
 
 function readFavoriteController(){
     $profile = $_REQUEST['profile'];
-    return getAllFavorite($profile);
+    $favorites = getAllFavorite($profile);
+
+    if (empty($favorites)) {
+        return ["error" => "Votre liste de favoris est vide."];
+    }
+    return $favorites;
 }
 
 function updateFavoriteController(){
@@ -144,7 +151,13 @@ function updateFavoriteController(){
 
 function readHighlightController(){
     $min_age = $_REQUEST['min_age'];
-    return getHighlightMovies($min_age);
+    $highlights = getHighlightMovies($min_age);
+
+    if (empty($highlights)) {
+        return ["error" => "Aucun film mis en avant pour le moment."];
+    }
+
+    return $highlights;
 }
     
 function readStatsMoviesController() {

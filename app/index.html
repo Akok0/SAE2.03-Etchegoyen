@@ -26,7 +26,7 @@
 
       let profiles = await DataProfile.requestProfiles();
       let movies = null;
-      let currentProfileId = null;
+      let ProfileId = null;
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
@@ -58,7 +58,7 @@
                 </div>`;
           return;
         }
-        currentProfileId = id;
+        ProfileId = id;
         content.innerHTML = "";
         let profileSelected = await DataProfile.requestProfiles(id);
         movies = await DataMovie.requestMovies(profileSelected.min_age);
@@ -76,7 +76,7 @@
       };
 
       C.handlerMovieDetail = async function (id) {
-        let idProfile = currentProfileId;
+        let idProfile = ProfileId;
         let selectedMovie = await DataMovie.requestMovieDetails(id, idProfile);
 
         if (selectedMovie) {
@@ -94,35 +94,28 @@
       };
 
       C.handlerCloseMovieDetail = function () {
-        C.handlerSelectProfile(currentProfileId);
+        C.handlerSelectProfile(ProfileId);
       };
 
       C.handlerSearch = async function () {
-        let profileSelected =
-          await DataProfile.requestProfiles(currentProfileId);
-        if (!currentProfileId) {
-          C.handlerSelectProfile(currentProfileId);
+        if (!ProfileId) {
+          C.handlerSelectProfile(ProfileId);
           return;
         }
-
         let searchValue = document.querySelector(".navbar__searchbar").value;
+        if (searchValue.trim() === "") {
+          C.handlerSelectProfile(ProfileId);
+          return;
+        }
+        let profileSelected = await DataProfile.requestProfiles(ProfileId);
         let data = await DataMovie.requestSearchMovies(
           profileSelected.min_age,
           searchValue,
         );
-        if (searchValue != "") {
-          if (data.error) {
-            let content = document.querySelector("#content");
-            content.innerHTML = `
-            <div class="empty-state">
-                <p>${data.error}</p>
-            </div>`;
-          } else {
-            V.renderMovies(data, "C.handlerMovieDetail");
-          }
-        } else {
-          C.handlerSelectProfile(currentProfileId);
-        }
+        document.querySelector("#content").innerHTML = Movies.format(
+          data,
+          "C.handlerMovieDetail"
+        );
       };
 
       C.handlerAddFavorite = async function (profile, movie) {
@@ -144,7 +137,7 @@
       };
 
       C.handlerLogOut = function () {
-        currentProfileId = null;
+        ProfileId = null;
         let searchBar = document.querySelector(".navbar__searchbar");
         if (searchBar) {
           searchBar.value = "";
@@ -153,7 +146,7 @@
         if (selectMenu) {
           selectMenu.value = "";
         }
-        C.handlerSelectProfile(currentProfileId);
+        C.handlerSelectProfile(ProfileId);
       };
 
       C.start = function () {
@@ -166,7 +159,7 @@
           "C.handlerDropdown()",
           "C.handlerSearch()",
         );
-        C.handlerSelectProfile(currentProfileId);
+        C.handlerSelectProfile(ProfileId);
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -216,56 +209,31 @@
 
       V.renderMoviesCategory = function (groupedData, handler) {
         let content = document.querySelector("#content");
+        
+        if (groupedData.error) {
+        content.innerHTML += Movies.format(groupedData, handler);
+        return;
+    }
+        
         let html = "";
 
-        if (groupedData) {
           for (let category in groupedData) {
             let moviesInCat = groupedData[category];
             let moviesHtml = Movies.format(moviesInCat, handler);
             html += MovieCategory.format(category, moviesHtml);
           }
-        }
-        if (html == "") {
-          content.innerHTML += `
-                <div class="empty-state">
-                    <p>Aucun film disponible pour votre tranche d'âge.</p>
-                </div>`;
-        } else {
-          content.innerHTML += html;
-        }
+        content.innerHTML += html;
       };
       V.renderMoviesFavorite = function (handler, favoriteData) {
-        let content = document.querySelector("#content");
-        let html = "";
-        if (favoriteData && favoriteData.length > 0) {
-          let favCards = Movies.format(favoriteData, handler);
-          html += MovieFavorite.format(favCards);
-        }
-        if (html == "") {
-          let data = `
-                <div class="empty-state">
-                    <p>Votre liste de favoris est vide.</p>
-                </div>`;
-          html += MovieFavorite.format(data);
-        }
-        content.innerHTML += html;
+    let content = document.querySelector("#content");
+    let favCards = Movies.format(favoriteData, handler);
+    content.innerHTML += MovieFavorite.format(favCards);
       };
 
       V.renderMoviesHighlighted = function (handler, highlightedData) {
-        let content = document.querySelector("#content");
-        let html = "";
-        if (highlightedData && highlightedData.length > 0) {
-          let HighlightCards = Movies.format(highlightedData, handler);
-          html += MoviesHighlighted.format(HighlightCards);
-        }
-        if (html == "") {
-          let data = `
-                <div class="empty-state">
-                    <p>Aucun film mis en avant pour le moment.</p>
-                </div>`;
-          html += MoviesHighlighted.format(data);
-        }
-        content.innerHTML += html;
+let content = document.querySelector("#content");
+    let highlightCards = Movies.format(highlightedData, handler);
+    content.innerHTML += MoviesHighlighted.format(highlightCards);
       };
 
       C.start(); // Démarre l'application
