@@ -160,3 +160,13 @@ function readStatsUsersController() {
         getAvgFavorites()
     ];
 }
+
+function readSearchmoviesController() {
+    $min_age = $_REQUEST['min_age'];
+    $searchValue = $_REQUEST['searchvalue'];
+    $resultas = getSearchmovies($min_age, $searchValue);
+    if (empty($resultas)) {
+        return ["error" => "Aucun film ne correspond à votre recherche."];
+    }
+    return $resultas;
+}

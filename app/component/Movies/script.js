@@ -5,10 +5,17 @@ let templateMovie = await templateFileMovie.text();
 
 let Movies = {};
 
-Movies.format = function (data, handler) {
+Movies.format = function (data, handler, error) {
   let html = template;
+  let message = "";
+
+  if (data.error) {
+    message = data.error;
+  } else {
+    message = "Aucun film disponible pour le moment.";
+}
   if (data.length == 0) {
-    html = html.replace("{{movie}}", "<p class='movies__error'>Aucun film disponible pour le moment.</p>");
+    html = html.replace("{{movie}}", "<p class='movies__error'>"+ message +"</p>");
   }
   else {
     let htmlMovie = "";

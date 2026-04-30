@@ -100,6 +100,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = readStatsUsersController();
       break;
 
+    case 'searchmovies':
+      $data = readSearchmoviesController();
+      break;
+
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée
