@@ -54,7 +54,7 @@
         if (!id) {
           content.innerHTML = `
                 <div class="no-profile">
-                    <p>Sélectionner pour commencer.</p>
+                    <p>Sélectionner un profile utilisateur pour commencer.</p>
                 </div>`;
           return;
         }
@@ -104,14 +104,14 @@
           return;
         }
         let searchValue = document.querySelector(".navbar__searchbar").value;
-        if (searchValue.trim() === "") {
+        if (searchValue == "") {
           C.handlerSelectProfile(ProfileId);
           return;
         }
         let profileSelected = await DataProfile.requestProfiles(ProfileId);
         let data = await DataMovie.requestSearchMovies(
-          profileSelected.min_age,
-          searchValue,
+          searchValue, profileSelected.min_age
+          
         );
         document.querySelector("#content").innerHTML = Movies.format(
           data,

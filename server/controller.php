@@ -175,11 +175,33 @@ function readStatsUsersController() {
 }
 
 function readSearchmoviesController() {
-    $min_age = $_REQUEST['min_age'];
+    if(isset($_REQUEST['id'])){
+        $min_age = $_REQUEST['min_age'];
+    }
+    else{
+        $min_age = 999;
+    }
     $searchValue = $_REQUEST['searchvalue'];
     $resultas = getSearchmovies($min_age, $searchValue);
     if (empty($resultas)) {
         return ["error" => "Aucun film ne correspond à votre recherche."];
     }
     return $resultas;
+}
+
+
+function updateHighlightController(){
+    $id = $_REQUEST['id'];
+    $highlight = $_REQUEST['highlight'];
+
+    if (!empty($_REQUEST['id'])) {
+        $id = $_REQUEST['id'];
+        $ok = updateHighlight($id, $highlight);
+        if($ok !== false){
+            return "Le statut du film a été mis à jour";
+        }
+        else{
+            return false;
+        }
+    }
 }

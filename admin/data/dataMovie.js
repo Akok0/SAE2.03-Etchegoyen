@@ -20,4 +20,20 @@ DataMovie.addmovies = async function(fdata){
     return data;
 }
 
+DataMovie.requestSearchMovies = async function(searchValue = null){
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=searchmovies&searchvalue=" + searchValue);
+    let data = await answer.json();
+    return data;
+}
+
+DataMovie.updateHighlight = async function(fdata){
+    let config = {
+        method: "POST",
+        body: fdata
+    };
+    let anwser = await fetch(HOST_URL + "/server/script.php?todo=updatehighlight", config)
+    let data = await anwser.json();
+    return data;
+} 
+
 export {DataMovie};

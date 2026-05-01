@@ -10,6 +10,8 @@
     <section id="log"></section>
     <section id="addmenu"></section>
     <section id="addprofile"></section>
+    <section id="searchbar"></section>
+    <section id="content"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
@@ -17,6 +19,7 @@
       import { DataMovie } from "./data/dataMovie.js";
       import { DataProfile } from "./data/dataProfile.js";
       import { ProfileForm } from "./component/ProfileForm/script.js";
+      import { MovieSearchForm } from "./component/MovieSearchForm/script.js";
 
       let profiles = await DataProfile.requestProfiles();
       let movies = await DataMovie.requestCategories();
@@ -45,30 +48,47 @@
         }
       };
 
-
       C.handlerSelectProfile = async function () {
-        let selectMenu = document.querySelector(
-          ".profiles",
-        );
-          let form = document.querySelector(".form__profile");
+        let selectMenu = document.querySelector(".profiles");
+        let form = document.querySelector(".form__profile");
 
         let id = selectMenu.value;
-        if (!id){
+        if (!id) {
           form.elements.name.value = "";
-            form.elements.avatar.value = "";
-            form.elements.age.value = "0";
-            return;
-          } 
+          form.elements.avatar.value = "";
+          form.elements.age.value = "0";
+          return;
+        }
         let profileToEdit = await DataProfile.requestProfiles(id);
         if (profileToEdit) {
           let form = document.querySelector(".form__profile");
           form.elements.name.value = profileToEdit.name;
           form.elements.avatar.value = profileToEdit.avatar;
           form.elements.age.value = profileToEdit.min_age;
-          V.renderLog(
-            "Profil séléctionné : " + profileToEdit.name
-          );
+          V.renderLog("Profil séléctionné : " + profileToEdit.name);
         }
+      };
+
+      C.handlerToggleHighlight = async function (id, highlight) {
+        let fd = new FormData();
+        fd.append("id", id);
+        fd.append("highlight", highlight);
+        let res = await DataMovie.updateHighlight(fd);
+        V.renderLog(res);
+        C.handlerSearch();
+      };
+
+      C.handlerSearch = async function () {
+        let search = document.querySelector(".navbar__searchbar");
+        if (!search) return;
+        let searchValue = search.value;
+        let listContainer = document.querySelector(".Searchresultat");
+        if (searchValue == "") {
+          listContainer.innerHTML = "";
+          return;
+        }
+        let data = await DataMovie.requestSearchMovies(searchValue);
+        V.renderMovieResults(data, "C.handlerToggleHighlight");
       };
 
       C.start = function () {
@@ -79,6 +99,7 @@
           "C.handlerUpdateProfile()",
           "C.handlerSelectProfile()",
         );
+        V.renderMovieSearchBar("C.handlerSearch()");
       };
 
       window.V = {};
@@ -95,7 +116,26 @@
 
       V.renderProfileForm = function (data, handlerUpdate, handlerSelect) {
         let content = document.querySelector("#addprofile");
-        content.innerHTML = ProfileForm.format(data, handlerUpdate, handlerSelect);
+        content.innerHTML = ProfileForm.format(
+          data,
+          handlerUpdate,
+          handlerSelect,
+        );
+      };
+
+      V.renderMovieSearchBar = function (handlerSearch) {
+        let content = document.querySelector("#content");
+        content.innerHTML = MovieSearchForm.formatSearchBar(handlerSearch);
+      };
+
+      V.renderMovieResults = function (data, handlerToggleHighlight) {
+        let listContainer = document.querySelector(".Searchresultat");
+        if (listContainer) {
+          listContainer.innerHTML = MovieSearchForm.formatResults(
+            data,
+            handlerToggleHighlight,
+          );
+        }
       };
 
       C.start();

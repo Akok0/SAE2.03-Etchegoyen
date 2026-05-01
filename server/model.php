@@ -261,11 +261,24 @@ function getAvgFavorites()
 function getSearchmovies($min_age, $searchValue)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Category.name AS label FROM Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND LOWER(Movie.name) LIKE :searchvalue OR LOWER(Category.name) LIKE :searchvalue ORDER BY Category.name";
+    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Movie.highlight, Category.name AS label FROM Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND (LOWER(Movie.name) LIKE :searchvalue OR LOWER(Category.name) LIKE :searchvalue OR Movie.year LIKE :searchvalue) ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
     $search = "%" . strtolower($searchValue) . "%";
     $stmt->bindParam(':min_age', $min_age);
     $stmt->bindParam(':searchvalue', $search);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+
+function updateHighlight($id, $highlight)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "UPDATE Movie SET highlight = :highlight WHERE id = :id;";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':highlight', $highlight);
+    $stmt->execute();
+    $res = $stmt->rowCount();
+    return $res;
 }

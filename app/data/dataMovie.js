@@ -15,7 +15,7 @@ DataMovie.requestMovieDetails = async function(id, profile){
     let data = await answer.json();
     return data;
 }
-DataMovie.requestSearchMovies = async function(min_age = 0, searchValue = null){
+DataMovie.requestSearchMovies = async function(searchValue = null, min_age){
     let answer = await fetch(HOST_URL + "/server/script.php?todo=searchmovies&min_age=" + min_age + "&searchvalue=" + searchValue);
     let data = await answer.json();
     return data;

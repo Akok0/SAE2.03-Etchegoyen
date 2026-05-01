@@ -103,6 +103,10 @@ if ( isset($_REQUEST['todo']) ){
     case 'searchmovies':
       $data = readSearchmoviesController();
       break;
+      
+    case 'updatehighlight':
+      $data = updateHighlightController();
+      break;
 
 
 
