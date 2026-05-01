@@ -25,6 +25,12 @@ Movies.format = function (data, handler, error) {
         .replaceAll("{{image}}", "../server/images/" + movie.image)
         .replaceAll("{{handler}}", handler)
         .replaceAll("{{id}}", movie.id);
+        if (movie.note){
+          card = card.replaceAll("{{note}}", movie.note);
+        }
+        else{
+          card = card.replaceAll("{{note}}", "");
+        }
       htmlMovie += card;
     }
     html = html.replace("{{movie}}", htmlMovie);

@@ -108,6 +108,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = updateHighlightController();
       break;
 
+    case 'addnote':
+      $data = addNoteController();
+      break;
+
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée

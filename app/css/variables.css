@@ -5,6 +5,7 @@
   --color-black: hsl(253, 69%, 8%);
   --color-white: hsl(0, 0%, 100%);
   --color-gray-light: hsl(0, 0%, 80%);
+  --color-red: hsl(0, 100%, 50%);
   --color-gray: hsl(0, 2%, 10%);
   --color-gray-dark: hsl(0, 0%, 5%);
   --ff-sans: "DM sans", sans-serif;
@@ -13,4 +14,5 @@
   --color-fg: var(--color-white);
   --color-bg: var(--color-gray-dark);
   --color-bg2: var(--color-gray);
+  --color-accent: var(--color-red);
 }

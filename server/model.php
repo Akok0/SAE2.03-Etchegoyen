@@ -23,7 +23,13 @@ define("DBPWD", "etchegoyen3");
 function getAllMovies($min_age)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "select Movie.id, Movie.name,  Movie.image, Movie.id_category, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age ORDER BY Category.name";
+    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Category.name AS label, ROUND(AVG(Note.valeur), 1) AS note
+            FROM Movie 
+            INNER JOIN Category ON Category.id = Movie.id_category 
+            LEFT JOIN Note ON Note.id_movie = Movie.id 
+            WHERE min_age <= :min_age
+            GROUP BY Movie.id
+            ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':min_age', $min_age);
     $stmt->execute();
@@ -83,7 +89,12 @@ function addProfile($name, $url, $age)
 function getMovieDetail($id)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "select Category.name as label, Movie.* from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE Movie.id = :id";
+    $sql = "SELECT Category.name AS label, Movie.*, ROUND(AVG(Note.valeur), 1) AS note 
+            FROM Movie 
+            INNER JOIN Category ON Category.id = Movie.id_category
+            LEFT JOIN Note ON Note.id_movie = Movie.id
+            WHERE Movie.id = :id
+            GROUP BY Movie.id";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
@@ -144,7 +155,11 @@ function readFavorite($profile, $movie)
 function getAllFavorite($profile)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.* FROM Movie INNER JOIN Favorite ON Movie.id = Favorite.id_movie WHERE Favorite.id_profile = :profile";
+    $sql = "SELECT Movie.*, ROUND(AVG(Note.valeur), 1) AS note FROM Movie 
+            INNER JOIN Favorite ON Movie.id = Favorite.id_movie 
+            LEFT JOIN Note ON Note.id_movie = Movie.id
+            WHERE Favorite.id_profile = :profile
+            GROUP BY Movie.id";
     $stmt = $cnx->prepare($sql);
 
     $stmt->bindParam(':profile', $profile);
@@ -187,7 +202,13 @@ function removeFavorite($profile, $movie)
 function getHighlightMovies($min_age)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.name, Movie.image, Movie.id_category, Movie.description, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND highlight = 1 ORDER BY Category.name";
+    $sql = "SELECT Movie.id, Movie.name, Movie.image, Movie.id_category, Movie.description, Category.name AS label, ROUND(AVG(Note.valeur), 1) AS note
+            FROM Movie
+            INNER JOIN Category ON Category.id = Movie.id_category
+            LEFT JOIN Note ON Note.id_movie = Movie.id
+            WHERE min_age <= :min_age AND highlight = 1
+            GROUP BY Movie.id
+            ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':min_age', $min_age);
     $stmt->execute();
@@ -278,6 +299,31 @@ function updateHighlight($id, $highlight)
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':highlight', $highlight);
+    $stmt->execute();
+    $res = $stmt->rowCount();
+    return $res;
+}
+
+
+function getNoteMoviesProfile($idmovie, $idprofile)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT valeur FROM Note WHERE id_movie = :idmovie AND id_profile = :idprofile";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':idmovie', $idmovie);
+    $stmt->bindParam(':idprofile', $idprofile);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+function addNoteMovies($idmovie, $idprofile, $valeur)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "INSERT INTO Note (id_movie, id_profile, valeur) 
+            VALUES (:idmovie, :idprofile, :valeur)";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':idmovie', $idmovie);
+    $stmt->bindParam(':idprofile', $idprofile);
+    $stmt->bindParam(':valeur', $valeur);
     $stmt->execute();
     $res = $stmt->rowCount();
     return $res;

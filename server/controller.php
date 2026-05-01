@@ -205,3 +205,22 @@ function updateHighlightController(){
         }
     }
 }
+
+function addNoteController(){
+    $idmovie = $_REQUEST['idmovie'];
+    $idprofile = $_REQUEST['idprofile'];
+    $valeur = $_REQUEST['valeur'];
+    $alreadyrated = getNoteMoviesProfile($idmovie, $idprofile);
+    if (!$alreadyrated){
+        $ok = addNoteMovies($idmovie, $idprofile, $valeur);
+        if($ok != 0){
+            return "Votre note a été enregistrée.";
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return "Vous avez déjà noté ce film.";
+    }
+}

@@ -21,4 +21,10 @@ DataMovie.requestSearchMovies = async function(searchValue = null, min_age){
     return data;
 }
 
+DataMovie.addNote = async function(idmovie, idprofile, valeur){
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=addnote&idmovie=" + idmovie + "&idprofile=" + idprofile + "&valeur=" + valeur);
+    let data = await answer.json();
+    return data;
+}
+
 export {DataMovie};

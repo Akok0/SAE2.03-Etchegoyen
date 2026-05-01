@@ -82,8 +82,8 @@
         if (selectedMovie) {
           V.renderMovieDetail(
             selectedMovie,
-            `C.handlerAddFavorite(${idProfile}, ${id})`,
-          "C.handlerCloseMovieDetail()"
+            "C.handlerAddFavorite("+ idProfile+ "," + id +")",
+          "C.handlerCloseMovieDetail()", "C.handlerNote("+ idProfile+ "," + id +")"
           );
           if (selectedMovie.isFavorite == true) {
             let favorite = document.querySelector(".detail__favorite");
@@ -135,6 +135,13 @@
         } else {
           alert(result);
         }
+      };
+
+      C.handlerNote = async function (profile, movie) {
+        let note = document.querySelector(".detail__input");
+        let valeurNote = note.value;
+        let result = await DataMovie.addNote(movie, profile, valeurNote);
+        alert(result);
       };
 
       C.handlerLogOut = function () {
@@ -200,9 +207,9 @@
         content.innerHTML = Movies.format(data, handler, error);
       };
 
-      V.renderMovieDetail = function (data, handlerFavorite, handlerClose) {
+      V.renderMovieDetail = function (data, handlerFavorite, handlerClose, handlerNote) {
         let content = document.querySelector("#content");
-        content.innerHTML = MovieDetail.format(data, handlerFavorite, handlerClose);
+        content.innerHTML = MovieDetail.format(data, handlerFavorite, handlerClose, handlerNote);
       };
 
       V.renderMoviesCategory = function (groupedData, handler) {
