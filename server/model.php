@@ -328,3 +328,29 @@ function addNoteMovies($idmovie, $idprofile, $valeur)
     $res = $stmt->rowCount();
     return $res;
 }
+
+function getCommentMovies($idmovie)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT Comment.content, Comment.date_comment, Profile.name AS name FROM Comment
+            INNER JOIN Profile ON Profile.id = Comment.id_profile 
+            WHERE id_movie = :idmovie
+            ORDER BY Comment.date_comment DESC";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':idmovie', $idmovie);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+function addCommentMovies($idmovie, $idprofile, $valeur)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "INSERT INTO Comment (id_movie, id_profile, content) 
+            VALUES (:idmovie, :idprofile, :valeur)";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':idmovie', $idmovie);
+    $stmt->bindParam(':idprofile', $idprofile);
+    $stmt->bindParam(':valeur', $valeur);
+    $stmt->execute();
+    $res = $stmt->rowCount();
+    return $res;
+}

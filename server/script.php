@@ -112,6 +112,14 @@ if ( isset($_REQUEST['todo']) ){
       $data = addNoteController();
       break;
 
+    case 'readcomment':
+      $data = readCommentController();
+      break;
+
+    case 'addcomment':
+      $data = addCommentController();
+      break;
+
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée

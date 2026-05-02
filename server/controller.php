@@ -224,3 +224,29 @@ function addNoteController(){
         return "Vous avez déjà noté ce film.";
     }
 }
+
+function addCommentController(){
+    $idmovie = $_REQUEST['idmovie'];
+    $idprofile = $_REQUEST['idprofile'];
+    $valeur = $_REQUEST['valeur'];
+    if (!$idprofile) {
+        return "Sélectionnez un profil";
+    }  
+    $ok = addCommentMovies($idmovie, $idprofile, $valeur);
+    if($ok != 0){
+        return "Votre commentaire a été enregistrée.";
+    }
+    else{
+        return false;
+    }
+}
+
+function readCommentController(){
+    $profile = $_REQUEST['idprofile'] ?? null;
+    $movie = $_REQUEST['idmovie'] ?? null;  
+    $resultat = getCommentMovies($movie);    
+    if (empty($resultat)) {
+        return ["error" => "Aucun commentaire pour ce film. Soyez le premier à en laisser un !"];
+    }    
+    return $resultat;
+}

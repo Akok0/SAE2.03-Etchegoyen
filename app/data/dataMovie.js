@@ -27,4 +27,16 @@ DataMovie.addNote = async function(idmovie, idprofile, valeur){
     return data;
 }
 
+DataMovie.addComment = async function(idmovie, idprofile, valeur){
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=addcomment&idmovie=" + idmovie + "&idprofile=" + idprofile + "&valeur=" + valeur);
+    let data = await answer.json();
+    return data;
+}
+
+DataMovie.requestCommentMovies = async function(movie, profile){
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=readcomment&idmovie=" + movie + "&idprofile=" + profile);
+    let data = await answer.json();
+    return data;
+}
+
 export {DataMovie};

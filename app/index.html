@@ -78,12 +78,15 @@
       C.handlerMovieDetail = async function (id) {
         let idProfile = ProfileId;
         let selectedMovie = await DataMovie.requestMovieDetails(id, idProfile);
+        let selectedMovieComment = await DataMovie.requestCommentMovies(id, idProfile);
 
         if (selectedMovie) {
           V.renderMovieDetail(
             selectedMovie,
             "C.handlerAddFavorite("+ idProfile+ "," + id +")",
-          "C.handlerCloseMovieDetail()", "C.handlerNote("+ idProfile+ "," + id +")"
+          "C.handlerCloseMovieDetail()", "C.handlerNote("+ idProfile+ "," + id +")",
+          selectedMovieComment,
+          "C.handlerComment("+ idProfile+ "," + id +")"
           );
           if (selectedMovie.isFavorite == true) {
             let favorite = document.querySelector(".detail__favorite");
@@ -138,10 +141,27 @@
       };
 
       C.handlerNote = async function (profile, movie) {
-        let note = document.querySelector(".detail__input");
-        let valeurNote = note.value;
-        let result = await DataMovie.addNote(movie, profile, valeurNote);
-        alert(result);
+        let note = document.querySelector(".detail__inputNote");
+        if (note.reportValidity()) {
+          let valeurNote = note.value;
+          let result = await DataMovie.addNote(movie, profile, valeurNote);
+          alert(result);
+        }
+      };
+
+      C.handlerComment = async function (profile, movie) {
+        let comment = document.querySelector(".detail__inputComment");
+        let pattern = /^[^<>]*$/;
+        if (!pattern.test(comment.value)) {
+            comment.setCustomValidity("Veuillez utiliser uniquement du texte (les caractères < et > sont interdits).");
+        } else {
+            comment.setCustomValidity("");
+        }
+        if (comment.reportValidity()) {
+          let valeurComment = comment.value;
+          let resultat = await DataMovie.addComment(movie, profile, valeurComment);
+          C.handlerMovieDetail(movie);
+        }
       };
 
       C.handlerLogOut = function () {
@@ -206,10 +226,10 @@
         let content = document.querySelector("#content");
         content.innerHTML = Movies.format(data, handler, error);
       };
-
-      V.renderMovieDetail = function (data, handlerFavorite, handlerClose, handlerNote) {
+      
+      V.renderMovieDetail = function (data, handlerFavorite, handlerClose, handlerNote, dataComment, handlerComment) {
         let content = document.querySelector("#content");
-        content.innerHTML = MovieDetail.format(data, handlerFavorite, handlerClose, handlerNote);
+        content.innerHTML = MovieDetail.format(data, handlerFavorite, handlerClose, handlerNote, dataComment, handlerComment);
       };
 
       V.renderMoviesCategory = function (groupedData, handler) {
