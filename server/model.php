@@ -23,7 +23,7 @@ define("DBPWD", "etchegoyen3");
 function getAllMovies($min_age)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Category.name AS label, ROUND(AVG(Note.valeur), 1) AS note
+    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Movie.date_ajout ,Category.name AS label, ROUND(AVG(Note.valeur), 1) AS note
             FROM Movie 
             INNER JOIN Category ON Category.id = Movie.id_category 
             LEFT JOIN Note ON Note.id_movie = Movie.id 
@@ -202,7 +202,7 @@ function removeFavorite($profile, $movie)
 function getHighlightMovies($min_age)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.name, Movie.image, Movie.id_category, Movie.description, Category.name AS label, ROUND(AVG(Note.valeur), 1) AS note
+    $sql = "SELECT Movie.id, Movie.name, Movie.image, Movie.id_category, Movie.description, Movie.date_ajout, Category.name AS label, ROUND(AVG(Note.valeur), 1) AS note
             FROM Movie
             INNER JOIN Category ON Category.id = Movie.id_category
             LEFT JOIN Note ON Note.id_movie = Movie.id
@@ -264,6 +264,70 @@ function getNbProfiles()
     return $stmt->fetch(PDO::FETCH_OBJ);
 }
 
+
+function getLatestMovie()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Film le plus récent' AS name, name as value, date_ajout FROM Movie ORDER BY date_ajout DESC LIMIT 1";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getBestMovie()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Film le mieux noté' AS name, Movie.name as value, ROUND(AVG(Note.valeur), 1) as avg_note
+            FROM Movie INNER JOIN Note ON Note.id_movie = Movie.id
+            GROUP BY Movie.id
+            ORDER BY avg_note DESC LIMIT 1";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getActiveProfile()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Profil le plus actif' AS name, Profile.name as value, COUNT(Favorite.id_profile) + COUNT(Note.id_profile) as total
+            FROM Profile 
+            INNER JOIN Favorite ON Favorite.id_profile = Profile.id
+            INNER JOIN Note ON Note.id_profile = Profile.id
+            GROUP BY Profile.id
+            ORDER BY total DESC LIMIT 1";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getNbComment()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Nombre de commentaires' as name, COUNT(*) as value
+            FROM Comment";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+function getNbCommentApproved()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Nombre de commentaires approuvé' as name, SUM(CASE WHEN approved = 1 THEN 1 ELSE 0 END) as value
+            FROM Comment";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+function getNbCommentPending()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT 'Nombre de commentaires en attente' as name, SUM(CASE WHEN approved = 0 THEN 1 ELSE 0 END) as value
+            FROM Comment";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
 function getAvgFavorites()
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
@@ -282,7 +346,7 @@ function getAvgFavorites()
 function getSearchmovies($min_age, $searchValue)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Movie.highlight, Category.name AS label FROM Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND (LOWER(Movie.name) LIKE :searchvalue OR LOWER(Category.name) LIKE :searchvalue OR Movie.year LIKE :searchvalue) ORDER BY Category.name";
+    $sql = "SELECT Movie.id, Movie.name,  Movie.image, Movie.id_category, Movie.highlight, Movie.date_ajout, Category.name AS label FROM Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE min_age <= :min_age AND (LOWER(Movie.name) LIKE :searchvalue OR LOWER(Category.name) LIKE :searchvalue OR Movie.year LIKE :searchvalue) ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
     $search = "%" . strtolower($searchValue) . "%";
     $stmt->bindParam(':min_age', $min_age);
@@ -315,6 +379,7 @@ function getNoteMoviesProfile($idmovie, $idprofile)
     $stmt->execute();
     return $stmt->fetchColumn();
 }
+
 function addNoteMovies($idmovie, $idprofile, $valeur)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
@@ -334,7 +399,7 @@ function getCommentMovies($idmovie)
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
     $sql = "SELECT Comment.content, Comment.date_comment, Profile.name AS name FROM Comment
             INNER JOIN Profile ON Profile.id = Comment.id_profile 
-            WHERE id_movie = :idmovie
+            WHERE id_movie = :idmovie AND Comment.approved = 1
             ORDER BY Comment.date_comment DESC";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':idmovie', $idmovie);
@@ -350,6 +415,41 @@ function addCommentMovies($idmovie, $idprofile, $valeur)
     $stmt->bindParam(':idmovie', $idmovie);
     $stmt->bindParam(':idprofile', $idprofile);
     $stmt->bindParam(':valeur', $valeur);
+    $stmt->execute();
+    $res = $stmt->rowCount();
+    return $res;
+}
+
+function getCommentAdmin()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT Comment.id, Comment.approved, Comment.content, Comment.date_comment, Profile.name AS name FROM Comment
+            INNER JOIN Profile ON Profile.id = Comment.id_profile 
+            WHERE Comment.approved = 0
+            ORDER BY Comment.date_comment DESC";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function updateCommentAdmin($id, $approved)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "UPDATE Comment SET approved = :approved WHERE id = :id;";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':approved', $approved);
+    $stmt->execute();
+    $res = $stmt->rowCount();
+    return $res;
+}
+
+function DeleteCommentAdmin($id)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+    $sql = "DELETE FROM Comment WHERE id = :id;";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
     $stmt->execute();
     $res = $stmt->rowCount();
     return $res;

@@ -31,6 +31,13 @@ Movies.format = function (data, handler, error) {
         else{
           card = card.replaceAll("{{note}}", "");
         }
+        if (movie.is_new == 1){
+          card = card.replaceAll("{{new}}", "NEW");
+        }
+        else{
+          card = card.replaceAll("{{new}}", "");
+        }
+
       htmlMovie += card;
     }
     html = html.replace("{{movie}}", htmlMovie);

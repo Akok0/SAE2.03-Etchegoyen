@@ -21,6 +21,12 @@ MovieDetail.format = function (data, handlerFavorite, handlerclose, handlerNote 
   .replaceAll("{{handlerclose}}", handlerclose)
   .replaceAll("{{handlerNote}}", handlerNote)
   .replaceAll("{{handlerComment}}", handlerComment);
+    if (data.is_new == 1){
+      html = html.replaceAll("{{new}}", "NEW");
+    }
+    else{
+      html = html.replaceAll("{{new}}", "");
+    }
 
 let htmlComment = "";
   let message = "";

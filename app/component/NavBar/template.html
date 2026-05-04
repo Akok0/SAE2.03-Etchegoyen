@@ -5,7 +5,7 @@
   </ul>
   <input class="navbar__searchbar" type="search" name="search" placeholder="Chercher un film ou une catégories" onkeyup="{{handlerSearch}}" onsearch="{{handlerSearch}}">
   <ul class="navbar__list">
-    <li class="navbar__item navbar__link" onclick="{{handlerLogOut}}">Déconnexion</li>
+    <li class="navbar__item navbar__link" onclick="{{handlerLogOut}}"><img class="navbar__logout" src="../server/images/logout.svg" alt=""></li>
       <li class="navbar__item dropdown">
           <button class="dropdown__btn" onclick="{{handlerDropdown}}">{{name}} <img class="btn__img" src="{{avatar}}" alt=""></button>
           

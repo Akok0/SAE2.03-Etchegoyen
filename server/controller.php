@@ -37,8 +37,16 @@ $min_age = $_REQUEST['min_age'];
     if (empty($movies)) {
         return ["error" => "Aucun film disponible pour votre tranche d'âge."];
     }
+    $limite = time() - 604800;
     $category = [];
     for ($i = 0; $i < count($movies); $i++) {
+        $movies[$i]->is_new = 0;
+        if (isset($movies[$i]->date_ajout)) {
+            $dateDuFilm = strtotime($movies[$i]->date_ajout);
+            if ($dateDuFilm >= $limite) {
+                $movies[$i]->is_new = 1;
+            }
+        }
         $label = $movies[$i]->label;
         $category[$label][] = $movies[$i];
     }
@@ -69,11 +77,19 @@ if(isset($_REQUEST['id'])){
         $id_profile = $_REQUEST['profile'];
         $movie = getMovieDetail($id);
         $favori = readFavorite($id_profile, $id);
+        $limite = time() - 604800;
         if ($favori > 0){
             $movie->isFavorite = true;
         }
         else{
             $movie->isFavorite = false;
+        }
+        $movie->is_new = 0;
+        if (isset($movie->date_ajout)) {
+            $dateDuFilm = strtotime($movie->date_ajout);
+            if ($dateDuFilm >= $limite) {
+                $movie->is_new = 1;
+            }
         }
         return $movie;
     }
@@ -126,6 +142,16 @@ function readFavoriteController(){
     if (empty($favorites)) {
         return ["error" => "Votre liste de favoris est vide."];
     }
+    $limite = time() - 604800;
+    for ($i = 0; $i < count($favorites); $i++) {
+        $favorites[$i]->is_new = 0;
+        if (isset($favorites[$i]->date_ajout)) {
+            $dateDuFilm = strtotime($favorites[$i]->date_ajout);
+            if ($dateDuFilm >= $limite) {
+                $favorites[$i]->is_new = 1;
+            }
+        }
+    }
     return $favorites;
 }
 
@@ -156,7 +182,16 @@ function readHighlightController(){
     if (empty($highlights)) {
         return ["error" => "Aucun film mis en avant pour le moment."];
     }
-
+    $limite = time() - 604800;
+    for ($i = 0; $i < count($highlights); $i++) {
+        $highlights[$i]->is_new = 0;
+        if (isset($highlights[$i]->date_ajout)) {
+            $dateDuFilm = strtotime($highlights[$i]->date_ajout);
+            if ($dateDuFilm >= $limite) {
+                $highlights[$i]->is_new = 1;
+            }
+        }
+    }
     return $highlights;
 }
     
@@ -164,13 +199,19 @@ function readStatsMoviesController() {
     return [
         getNbMovies(),
         getMostFavoritedMovie(),
-        getMostPopularCategory()
+        getMostPopularCategory(),
+        getLatestMovie(),
+        getBestMovie()
     ];
 }
 function readStatsUsersController() {
     return [
         getNbProfiles(),
-        getAvgFavorites()
+        getAvgFavorites(),
+        getActiveProfile(),
+        getNbComment(),
+        getNbCommentApproved(),
+        getNbCommentPending()
     ];
 }
 
@@ -185,6 +226,16 @@ function readSearchmoviesController() {
     $resultas = getSearchmovies($min_age, $searchValue);
     if (empty($resultas)) {
         return ["error" => "Aucun film ne correspond à votre recherche."];
+    }
+    $limite = time() - 604800;
+    for ($i = 0; $i < count($resultas); $i++) {
+        $resultas[$i]->is_new = 0;
+        if (isset($resultas[$i]->date_ajout)) {
+            $dateDuFilm = strtotime($resultas[$i]->date_ajout);
+            if ($dateDuFilm >= $limite) {
+                $resultas[$i]->is_new = 1;
+            }
+        }
     }
     return $resultas;
 }
@@ -242,11 +293,47 @@ function addCommentController(){
 }
 
 function readCommentController(){
-    $profile = $_REQUEST['idprofile'] ?? null;
-    $movie = $_REQUEST['idmovie'] ?? null;  
+    $movie = $_REQUEST['idmovie'];  
     $resultat = getCommentMovies($movie);    
     if (empty($resultat)) {
         return ["error" => "Aucun commentaire pour ce film. Soyez le premier à en laisser un !"];
     }    
     return $resultat;
+}
+
+function readCommentAdminController(){
+    $resultat = getCommentAdmin();    
+    if (empty($resultat)) {
+        return ["error" => "Aucun commentaire à modérer pour le moment."];
+    }    
+    return $resultat;
+}
+
+
+function updateCommentAdminController(){
+    $id = $_REQUEST['id'];
+    $approved = $_REQUEST['approved'];
+
+    if (!empty($_REQUEST['id'])) {
+        $id = $_REQUEST['id'];
+        if ($approved == 1){
+            $ok = updateCommentAdmin($id, $approved);
+            if($ok !== false){
+                return "Le commentaire a été approuvé avec succès.";
+            }
+            else{
+                return false;
+            }
+        }
+        else if ($approved == 2){
+            $ok = DeleteCommentAdmin($id);
+            if($ok !== false){
+                return "Le commentaire a été supprimé avec succès.";
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    return false;
 }

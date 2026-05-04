@@ -120,6 +120,13 @@ if ( isset($_REQUEST['todo']) ){
       $data = addCommentController();
       break;
 
+    case 'readcommentadmin':
+      $data = readCommentAdminController();
+      break;
+
+    case 'updatecommentadmin':
+      $data = updateCommentAdminController();
+      break;
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée
@@ -148,8 +155,8 @@ if ( isset($_REQUEST['todo']) ){
    * par la fonction de contrôleur et encodées en JSON (json_encode).
    * On renvoie aussi un code de réponse HTTP 200 (OK) pour indiquer que la requête a été traitée avec succès.
    */
-  echo json_encode($data);
   http_response_code(200); // 200 == "OK"
+  echo json_encode($data);
   exit();
 
    

@@ -109,8 +109,9 @@
           C.handlerSelectProfile(ProfileId);
           return;
         }
-        let searchValue = document.querySelector(".navbar__searchbar").value;
-        if (searchValue == "") {
+        let searchBar = document.querySelector(".navbar__searchbar");
+        let searchValue = searchBar.value;
+        if (searchBar.value !== searchValue || searchValue == "") {
           C.handlerSelectProfile(ProfileId);
           return;
         }
@@ -182,15 +183,6 @@
       };
 
       C.start = function () {
-        V.renderNavBar(
-          "C.handlerAbout()",
-          "C.handlerSelectProfile",
-          profiles,
-          profileSelected,
-          "C.handlerLogOut()",
-          "C.handlerDropdown()",
-          "C.handlerSearch()",
-        );
         C.handlerSelectProfile(ProfileId);
       };
 

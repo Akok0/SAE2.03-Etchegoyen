@@ -38,6 +38,10 @@
       --_offset: 0.5rem;
       color: rgba(255, 255, 255, 0.8);
     }
+    .navbar__logout{
+      height: 2rem;
+      width: 2rem;
+    }
   }
 
   .navbar__searchbar {

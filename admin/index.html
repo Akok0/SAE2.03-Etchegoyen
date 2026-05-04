@@ -10,8 +10,8 @@
     <section id="log"></section>
     <section id="addmenu"></section>
     <section id="addprofile"></section>
-    <section id="searchbar"></section>
-    <section id="content"></section>
+    <section id="search"></section>
+    <section id="comment"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
@@ -20,9 +20,14 @@
       import { DataProfile } from "./data/dataProfile.js";
       import { ProfileForm } from "./component/ProfileForm/script.js";
       import { MovieSearchForm } from "./component/MovieSearchForm/script.js";
+      import { DataComment } from "./data/dataComment.js";
+      import { CommentForm } from "./component/CommentForm/script.js";
+
+
 
       let profiles = await DataProfile.requestProfiles();
       let movies = await DataMovie.requestCategories();
+      let comment = await DataComment.requestComment();
 
       window.C = {};
 
@@ -91,6 +96,27 @@
         V.renderMovieResults(data, "C.handlerToggleHighlight");
       };
 
+       C.handlerApprove = async function (id, approved) {
+        let fd = new FormData();
+        fd.append("id", id);
+        fd.append("approved", 1);
+        let res = await DataComment.updatecomment(fd);
+        let updatedComments = await DataComment.requestComment();
+        V.renderLog(res);
+        V.renderComment(updatedComments, "C.handlerApprove", "C.handlerDelete");
+      };
+
+       C.handlerDelete = async function (id, approved) {
+        console.log("Contenu de DataComment :", DataComment);
+        let fd = new FormData();
+        fd.append("id", id);
+        fd.append("approved", 2);
+        let res = await DataComment.updatecomment(fd);
+        let updatedComments = await DataComment.requestComment();
+        V.renderLog(res);
+        V.renderComment(updatedComments, "C.handlerApprove", "C.handlerDelete");
+      };
+
       C.start = function () {
         V.renderLog("Démarrage de l'application");
         V.renderMovieForm(movies, "C.handlerUpdateMovie()");
@@ -100,23 +126,24 @@
           "C.handlerSelectProfile()",
         );
         V.renderMovieSearchBar("C.handlerSearch()");
+        V.renderComment(comment, "C.handlerApprove", "C.handlerDelete")
       };
 
       window.V = {};
 
       V.renderLog = function (txt) {
-        let content = document.querySelector("#log");
-        content.innerHTML = Log.format(txt);
+        let log = document.querySelector("#log");
+        log.innerHTML = Log.format(txt);
       };
 
       V.renderMovieForm = function (data, handler) {
-        let content = document.querySelector("#addmenu");
-        content.innerHTML = MovieForm.format(data, handler);
+        let addmenu = document.querySelector("#addmenu");
+        addmenu.innerHTML = MovieForm.format(data, handler);
       };
 
       V.renderProfileForm = function (data, handlerUpdate, handlerSelect) {
-        let content = document.querySelector("#addprofile");
-        content.innerHTML = ProfileForm.format(
+        let addprofile = document.querySelector("#addprofile");
+        addprofile.innerHTML = ProfileForm.format(
           data,
           handlerUpdate,
           handlerSelect,
@@ -124,8 +151,8 @@
       };
 
       V.renderMovieSearchBar = function (handlerSearch) {
-        let content = document.querySelector("#content");
-        content.innerHTML = MovieSearchForm.formatSearchBar(handlerSearch);
+        let search = document.querySelector("#search");
+        search.innerHTML = MovieSearchForm.formatSearchBar(handlerSearch);
       };
 
       V.renderMovieResults = function (data, handlerToggleHighlight) {
@@ -136,6 +163,10 @@
             handlerToggleHighlight,
           );
         }
+      };
+      V.renderComment = async function (data, handlerApprove, handlerDelete) {
+        let comment = document.querySelector("#comment");
+        comment.innerHTML = CommentForm.format(data, handlerApprove, handlerDelete);
       };
 
       C.start();
