@@ -27,6 +27,7 @@
       let profiles = await DataProfile.requestProfiles();
       let movies = null;
       let ProfileId = null;
+      let profileSelected = "";
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
@@ -56,11 +57,12 @@
                 <div class="no-profile">
                     <p>Sélectionner un profile utilisateur pour commencer.</p>
                 </div>`;
+        V.renderNavBar("C.handlerAbout()", "C.handlerSelectProfile", profiles, profileSelected, "C.handlerLogOut()", "C.handlerDropdown()", "C.handlerSearch()");
           return;
         }
         ProfileId = id;
         content.innerHTML = "";
-        let profileSelected = await DataProfile.requestProfiles(id);
+        profileSelected = await DataProfile.requestProfiles(id);
         movies = await DataMovie.requestMovies(profileSelected.min_age);
         let favorite = await DataFavorite.requestFavorite(id);
         let hightlight = await DataHighlight.requestHighlight(
@@ -69,6 +71,7 @@
         V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
         V.renderMoviesHighlighted("C.handlerMovieDetail", hightlight);
         V.renderMoviesCategory(movies, "C.handlerMovieDetail");
+        V.renderNavBar("C.handlerAbout()", "C.handlerSelectProfile", profiles, profileSelected, "C.handlerLogOut()", "C.handlerDropdown()", "C.handlerSearch()");
         let dropdown = document.querySelector(".dropdown");
         if (dropdown) {
           dropdown.classList.remove("open");
@@ -111,7 +114,7 @@
           C.handlerSelectProfile(ProfileId);
           return;
         }
-        let profileSelected = await DataProfile.requestProfiles(ProfileId);
+        profileSelected = await DataProfile.requestProfiles(ProfileId);
         let data = await DataMovie.requestSearchMovies(
           searchValue, profileSelected.min_age
           
@@ -165,6 +168,7 @@
       };
 
       C.handlerLogOut = function () {
+        profileSelected = "";
         ProfileId = null;
         let searchBar = document.querySelector(".navbar__searchbar");
         if (searchBar) {
@@ -182,6 +186,7 @@
           "C.handlerAbout()",
           "C.handlerSelectProfile",
           profiles,
+          profileSelected,
           "C.handlerLogOut()",
           "C.handlerDropdown()",
           "C.handlerSearch()",
@@ -207,6 +212,7 @@
         hAbout,
         handlerSelect,
         data,
+        profileSelected,
         handlerLogOut,
         handlerDropdown,
         handlerSearch,
@@ -216,6 +222,7 @@
           hAbout,
           handlerSelect,
           data,
+          profileSelected,
           handlerLogOut,
           handlerDropdown,
           handlerSearch,

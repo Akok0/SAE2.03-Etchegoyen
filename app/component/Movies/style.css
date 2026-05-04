@@ -19,7 +19,7 @@
     .movie {
         scroll-snap-align: start; 
         position: relative;
-        flex: 0 0 13rem; 
+        flex: 0 0 10rem; 
         aspect-ratio: 7/11;
         overflow: hidden;
         border-radius: 5px;
@@ -52,6 +52,9 @@
         &:hover{
             scale: 1.05;
         }
+    @media (min-width : 55em){
+        flex: 0 0 20rem; 
+    }
     }
 }
 

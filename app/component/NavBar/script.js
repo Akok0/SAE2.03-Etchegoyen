@@ -7,7 +7,7 @@ let templateProfile = await templateFileProfile.text();
 
 let NavBar = {};
 
-NavBar.format = function (hAbout, handlerSelect, data, handlerLogOut, handlerDropdown, handlerSearch) {
+NavBar.format = function (hAbout, handlerSelect, data, profileSelected, handlerLogOut, handlerDropdown, handlerSearch) {
   let html = template;
 
   html = html
@@ -15,7 +15,16 @@ NavBar.format = function (hAbout, handlerSelect, data, handlerLogOut, handlerDro
     .replaceAll("{{handlerDropdown}}", handlerDropdown)
     .replaceAll("{{handlerSelect}}", handlerSelect)
     .replaceAll("{{handlerLogOut}}", handlerLogOut)
-    .replaceAll("{{handlerSearch}}", handlerSearch);
+    .replaceAll("{{handlerSearch}}", handlerSearch)
+    if (profileSelected != ""){
+      html = html.replaceAll("{{name}}", profileSelected.name)
+                .replaceAll("{{avatar}}", "../server/images/" + profileSelected.avatar);
+    }
+    else{
+            html = html.replaceAll("{{name}}", "Choisir un profile")
+                .replaceAll("{{avatar}}", "../server/images/placeholderProfile.svg");
+    }
+
   let htmlProfile = "";
   for (let profileData of data) {
     let profile = templateProfile;
