@@ -3,7 +3,7 @@
     overflow-x: auto;
     display: flex;
     gap: .5rem;
-    scroll-snap-type:x;
+    scroll-snap-type:x mandatory;
     scrollbar-color: var(--color-white) transparent;
     padding: 1rem;
 
@@ -15,7 +15,6 @@
         text-align: center;
         width: 100%;
     }
-
     .movie {
         scroll-snap-align: start; 
         position: relative;
@@ -40,7 +39,6 @@
             margin: 0;
             padding: 10rem 1rem 1rem 1rem;
             color: var(--color-white);
-            box-sizing: border-box;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.945), rgba(0, 0, 0, 0));
             .movie__title{
                 font-size: 1rem;
@@ -58,3 +56,31 @@
     }
 }
 
+.moviesHighligh {
+    .movies {
+        gap: 0;
+        .movie {
+            flex: 0 0 100%;
+            aspect-ratio: 16/9;
+            border-radius: 0;
+        &:hover{
+            scale: 1;
+        }
+            @media (min-width: 55em) {
+                aspect-ratio: 25/9;
+                .movie__infos {
+                    font-size: 1.5rem;
+                }
+                .movie__title{
+                    font-size: 1.5rem;
+                }
+                .movie_note{
+                    font-size: 1.5rem;
+                }
+            }
+            .movie__cover {
+                object-position: center 25%;
+            }
+        }
+    }
+}

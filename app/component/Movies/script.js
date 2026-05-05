@@ -5,7 +5,7 @@ let templateMovie = await templateFileMovie.text();
 
 let Movies = {};
 
-Movies.format = function (data, handler, error) {
+Movies.format = function (data, handler, error, handlerFavorite) {
   let html = template;
   let message = "";
   if (data && data.error) {
@@ -24,6 +24,7 @@ Movies.format = function (data, handler, error) {
         .replaceAll("{{name}}", movie.name)
         .replaceAll("{{image}}", "../server/images/" + movie.image)
         .replaceAll("{{handler}}", handler)
+        .replaceAll("{{handlerFavorite}}", handlerFavorite)
         .replaceAll("{{id}}", movie.id);
         if (movie.note){
           card = card.replaceAll("{{note}}", movie.note);

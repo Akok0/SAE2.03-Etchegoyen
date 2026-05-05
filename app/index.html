@@ -68,8 +68,8 @@
         let hightlight = await DataHighlight.requestHighlight(
           profileSelected.min_age,
         );
-        V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
         V.renderMoviesHighlighted("C.handlerMovieDetail", hightlight);
+        V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
         V.renderMoviesCategory(movies, "C.handlerMovieDetail");
         V.renderNavBar("C.handlerAbout()", "C.handlerSelectProfile", profiles, profileSelected, "C.handlerLogOut()", "C.handlerDropdown()", "C.handlerSearch()");
         let dropdown = document.querySelector(".dropdown");
