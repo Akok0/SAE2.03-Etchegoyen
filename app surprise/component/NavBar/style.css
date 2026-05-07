@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 0 1rem;
   background-color: var(--color-bg3, #1a1a1a);
   color: var(--color-fg, #fff);
   font-family: sans-serif;
@@ -93,6 +92,9 @@
       letter-spacing: .1rem;
       color: var(--color-hover);
       background-color: var(--color-bg);
+      &:hover{
+        text-decoration: underline;
+      }
     }
     .navbar__top-btn--actif{
       width: 50%;
@@ -112,7 +114,9 @@
     padding: 1rem 2rem;
     position: relative;
     z-index: 100; 
-
+    @media(min-width: 105em){
+      padding: 1rem 30rem;
+    }
     &::before {
       content: "";
       flex: 1;
@@ -287,14 +291,10 @@
       gap: 1.5rem;
 
       .navbar__item {
-        color: #fff;
+        color: var(--color-white);
         text-transform: uppercase;
         font-size: 1rem;
         font-weight: 600;
-
-        &:hover {
-          color: var(--color-hover, #888);
-        }
       }
 
       .navbar__link {

@@ -359,7 +359,7 @@ function getSearchmovies($min_age, $searchValue)
 function updateHighlight($id, $highlight)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "UPDATE Movie SET highlight = :highlight WHERE id = :id;";
+    $sql = "UPDATE Movie SET highlight = :highlight WHERE id = :id";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':highlight', $highlight);
@@ -435,7 +435,7 @@ function getCommentAdmin()
 function updateCommentAdmin($id, $approved)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "UPDATE Comment SET approved = :approved WHERE id = :id;";
+    $sql = "UPDATE Comment SET approved = :approved WHERE id = :id";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':approved', $approved);
@@ -447,7 +447,7 @@ function updateCommentAdmin($id, $approved)
 function DeleteCommentAdmin($id)
 {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
-    $sql = "DELETE FROM Comment WHERE id = :id;";
+    $sql = "DELETE FROM Comment WHERE id = :id";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->execute();

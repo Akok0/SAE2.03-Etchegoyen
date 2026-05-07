@@ -46,7 +46,7 @@ Movies.format = function (data, handler, error, handlerFavorite) {
   return html
 };
 
-/*
+
 document.addEventListener('click', function(e) {
   let nextBtn = e.target.closest('.carousel__btn--next');
   let prevBtn = e.target.closest('.carousel__btn--prev');
@@ -82,6 +82,6 @@ document.addEventListener('click', function(e) {
     }
   }
 });
-*/
+
 
 export { Movies };

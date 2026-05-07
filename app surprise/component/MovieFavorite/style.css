@@ -21,9 +21,9 @@
         }
     }
     @media(min-width : 55em){
-        padding: 0 12vw;
+        padding: 0 10vw;
     }
-    @media(min-width : 95em){
+    @media(min-width : 105em){
         padding: 0 20vw;
     }
 }
