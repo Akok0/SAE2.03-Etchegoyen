@@ -1,10 +1,10 @@
 <div class="detail">
-    <span class="detail__close" onclick="{{handlerclose}}">&#120</span>
+    <span class="detail__close" onclick="{{handlerclose}}">&#120;</span>
     <h1 class="detail__title">{{title}}</h1>
     <div class="detail__top">
         <img class="detail__img" src="{{cover}}" alt="{{title}}">
         <ul class="detail__infos">
-            <span>{{new}}</span>
+            <li><span>{{new}}</span></li>
             <li class="detail__info">
                 <h2>Description</h2>
                 <p>{{description}}</p>
@@ -49,10 +49,10 @@
                 {{comment}}
             </ul>
             <div>
-                <textarea class="detail__inputComment" name="" id="" placeholder="Donnez votre avis" required></textarea>
+                <textarea class="detail__inputComment" placeholder="Donnez votre avis" required></textarea>
                 <input class="detail__btn-valider" type="button" value="Envoyer" onclick="{{handlerComment}}">
             </div>
         </div>
     </div>
-    <iframe class="detail__trailer" src="{{trailer}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe class="detail__trailer" src="{{trailer}}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

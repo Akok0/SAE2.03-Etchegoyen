@@ -1,0 +1,29 @@
+.movieFavorite {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+    margin-bottom: 2rem;  
+    background-color: var(--color-bg2);
+    .movieFavorite__title {
+        color: var(--color-fg);
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+        padding-left: 1rem; 
+        margin-bottom: 0.5rem;        
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        @media(min-width : 55em){
+            font-size: 2rem;
+        }
+    }
+    @media(min-width : 55em){
+        padding: 0 12vw;
+    }
+    @media(min-width : 95em){
+        padding: 0 20vw;
+    }
+}

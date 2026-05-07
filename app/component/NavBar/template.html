@@ -1,9 +1,9 @@
 <nav class="navbar font-sans">
   <ul class="navbar__list">
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
-    <a class="navbar__item" href="../statistiques/index.html">Statistiques</a>
+    <li><a class="navbar__item" href="../statistiques/index.html">Statistiques</a></li>
   </ul>
-  <input class="navbar__searchbar" type="search" name="search" placeholder="Chercher un film ou une catégories" onkeyup="{{handlerSearch}}" onsearch="{{handlerSearch}}">
+  <input class="navbar__searchbar" type="search" name="search" placeholder="Chercher un film ou une catégories" onkeyup="{{handlerSearch}}">
   <ul class="navbar__list">
     <li class="navbar__item navbar__link" onclick="{{handlerLogOut}}"><img class="navbar__logout" src="../server/images/logout.svg" alt=""></li>
       <li class="navbar__item dropdown">

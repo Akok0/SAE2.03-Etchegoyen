@@ -5,6 +5,7 @@
   --color-black: #000000;
   --color-white: #FFFFFF;
   --color-green: #A5B99C;
+  --color-orange: #FF8200;
   --color-gray-light: #959595;
   --color-gray: #1C1C1E;
   --color-gray-dark: #121214;
@@ -17,4 +18,5 @@
   --color-bg3: var(--color-gray);
   --color-hover: var(--color-gray-light);
   --color-accent: var(--color-green);
+  --color-accent2: var(--color-orange);
 }

@@ -1,13 +1,13 @@
-<div class="form">
+<div class="profile">
+    <h1>Gérer un profil utilisateur</h1>
     <form class="form__profile">
-        <h1>Gérer un profil utilisateur</h1>
         
         <select name="id" class="profiles" onchange="{{handlerSelect}}">
             <option value="">--CRÉER UN NOUVEAU PROFIL--</option>
             {{profiles}}
         </select>
         
-        <input type="text" name="name" placeholder="Nom du profil" required>
+        <input  class="profile__input" type="text" name="name" placeholder="Nom du profil" required>
         <input type="text" name="avatar" placeholder="URL avatar (optionnel)">
         <select name="age">
             <option value="0">Tout public</option>
@@ -16,6 +16,6 @@
             <option value="16">16 ans</option>
             <option value="18">18 ans</option>
         </select>
-        <input class="addprofile__btn" type="button" onclick="{{handlerUpdate}}" value="addprofile" name="todo">
+        <input class="profile__btn" type="button" onclick="{{handlerUpdate}}" value="addprofile" name="todo">
     </form>
 </div>

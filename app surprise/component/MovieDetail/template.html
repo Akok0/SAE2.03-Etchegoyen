@@ -1,0 +1,66 @@
+<div class="detail">
+    <span class="detail__close" onclick="{{handlerclose}}">&#120;</span>
+    <div class="detail__title">
+        <p class="detail__label">Now showing</p>
+        <h1 class="detail__name">{{title}}</h1>
+    </div>
+    <div class="detail__top">
+        <iframe class="detail__trailer" src="{{trailer}}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="detail__Allinfo">
+            <ul class="detail__infos">
+                <li><span class="detail__new">{{new}}</span></li>
+                <li class="detail__info">
+                    <p>{{description}}</p>
+                </li>
+                <li class="detail__info">
+                    <h2 class="detail__info-title">Réalisateur</h2>
+                    <p class="detail__info-content">{{realisateur}}</p>
+                </li>
+                <li class="detail__info">
+                    <h2 class="detail__info-title">Année de sortie</h2>
+                    <p class="detail__info-content">{{year}}</p>
+                </li>
+                <li class="detail__info">
+                    <h2 class="detail__info-title">Catégorie</h2>
+                    <p class="detail__info-content">{{categorie}}</p>
+                </li>
+            </ul>
+            <ul class="detail__more-list">
+                    <li class="detail__more">
+                        <h2 class="detail__more-title">Âge minimum</h2>
+                        <p class="detail__more-content">{{age}}</p>
+                    </li>
+                    <li class="detail__more">
+                        <h2 class="detail__more-title">Note des utilisateurs : </h2>
+                        <p class="detail__more-content">{{note}}</p>
+                    </li>
+
+                <li class="detail__info">
+                    <svg class="detail__favorite" onclick="{{handlerFavorite}}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 14C20.49 12.54 22 10.79 22 8.5C22 7.04131 21.4205 5.64236 20.3891 4.61091C19.3576 3.57946 17.9587 3 16.5 3C14.74 3 13.5 3.5 12 5C10.5 3.5 9.26 3 7.5 3C6.04131 3 4.64236 3.57946 3.61091 4.61091C2.57946 5.64236 2 7.04131 2 8.5C2 10.8 3.5 12.55 5 14L12 21L19 14Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </li>
+                <li class="detail__info">
+                    <label for="note">Donner une note :</label>
+                    <div class="detail__note">
+                        <input class="detail__inputNote" id="note" type="number" min="1" max="5" step="0.1" placeholder="x.x">
+                        <span class="detail__inputNote-info">/5</span>
+                        <input class="detail__btn-valider" type="button" value="valider" onclick="{{handlerNote}}">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="detaile__comments">
+            <h1 class="detail__comments-title">Commentaire</h1>
+            <ul class="detaile__commentsList">
+                {{comment}}
+            </ul>
+            <div class="detail__input">
+                <textarea class="detail__inputComment" placeholder="Donnez votre avis" required></textarea>
+                <input class="detail__btn-valider" type="button" value="Envoyer" onclick="{{handlerComment}}">
+            </div>
+        </div>
+        <img class="detail__img" src="{{cover}}" alt="{{title}}">
+
+    </div>
+</div>

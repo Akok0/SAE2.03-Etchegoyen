@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./css/base.css" />
   </head>
   <body>
-    <section id="log"></section>
+    <section id="log" class="log_sec"></section>
     <section id="addmenu"></section>
     <section id="addprofile"></section>
     <section id="search"></section>
@@ -84,7 +84,7 @@
       };
 
       C.handlerSearch = async function () {
-        let search = document.querySelector(".navbar__searchbar");
+        let search = document.querySelector(".form__searchbar");
         if (!search) return;
         let searchValue = search.value;
         let listContainer = document.querySelector(".Searchresultat");

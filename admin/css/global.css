@@ -1,0 +1,8 @@
+body{
+    font-family: var(--ff-sans);
+    background-color: var(--color-bg);
+}
+.log_sec{
+    position: sticky;
+    top: 0;
+}

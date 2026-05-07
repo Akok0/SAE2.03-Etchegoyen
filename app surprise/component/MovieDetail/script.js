@@ -22,7 +22,6 @@ MovieDetail.format = function (data, handlerFavorite, handlerclose, handlerNote 
     html = html.replaceAll("{{note}}", "pas encore de note")
 
   }
-
   html = html.replaceAll("{{handlerFavorite}}", handlerFavorite)
   .replaceAll("{{handlerclose}}", handlerclose)
   .replaceAll("{{handlerNote}}", handlerNote)

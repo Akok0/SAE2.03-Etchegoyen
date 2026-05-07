@@ -1,0 +1,13 @@
+@layer reset, global, variables, components, utilities;
+
+@import "./reset.css" layer(reset);
+@import "./global.css" layer(global);
+@import "./variables.css" layer(variables);
+@import "./utilities.css" layer(utilities);
+
+@import "../component/NavBar/style.css" layer(components);
+@import "../component/Movies/style.css" layer(components);
+@import "../component/MovieDetail/style.css" layer(components);
+@import "../component/MovieCategory/style.css" layer(components);
+@import "../component/MovieFavorite/style.css" layer(components);
+@import "../component/MovieHighlighted/style.css" layer(components);

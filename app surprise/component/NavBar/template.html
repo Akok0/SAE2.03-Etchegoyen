@@ -1,0 +1,72 @@
+<nav class="navbar font-sans" id="main-navbar">
+  <input type="checkbox" id="search-toggle" class="navbar__search-checkbox">
+  <input type="checkbox" id="menu-toggle" class="navbar__menu-checkbox">
+
+  <div class="navbar__search-overlay" id="searchOverlay">
+    <input class="navbar__search-input" id="searchInput" type="search" name="search" placeholder="Search for a film or director..." onkeyup="{{handlerSearch}}">
+    <label for="search-toggle" class="navbar__search-close">✕</label>
+  </div>
+
+  <div class="navbar__top">
+    <a href="#" class="navbar__top-btn">Cinemas</a>
+    <a href="#" class="navbar__top-btn navbar__top-btn--actif">Home cinema</a>
+  </div>
+
+  <div class="navbar__action">
+
+    <label for="menu-toggle" class="navbar__burger">
+      <svg class="burger__svg" viewBox="0 0 32 32" width="32" height="32">
+        <line class="burger__line" x1="2" y1="8" x2="30" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line class="burger__line" x1="2" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </label>
+
+    <a href="#">
+      <svg class="navbar__logo" viewBox="0 0 300 52" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <path fill="white" d="M290.755 1.801L290.755 29.744L257.036 0L257.036 49.581L266.279 49.581L266.279 21.727L299.999 51.429L299.999 1.801L290.755 1.801ZM25.268 0.787C30.83 0.787 35.92 2.413 40.676 5.754L40.676 16.695L38.639 14.976C34.655 11.6 30.432 10.014 25.584 10.014C16.328 10.014 10.11 16.387 10.11 25.868C10.11 34.907 16.298 41.467 24.824 41.467C29.883 41.467 34.404 39.702 38.639 36.069L40.667 34.33L40.667 45.92L40.154 46.288C35.946 49.294 31.117 50.756 25.395 50.756C18.174 50.756 11.883 48.316 7.197 43.698C2.555 39.122 0 32.765 0 25.805C0 18.782 2.51 12.594 7.262 7.911C11.987 3.25 18.135 0.787 25.268 0.787ZM195.904 25.79C195.904 11.984 207.096 0.791 220.904 0.791C234.71 0.791 245.904 11.984 245.904 25.79C245.904 39.598 234.71 50.791 220.904 50.791C207.096 50.791 195.904 39.598 195.904 25.79ZM137.163 16.166C137.163 22.667 132.735 27.886 126.558 29.696L142.1 49.582L130.087 49.582L116.028 30.676L116.028 49.581L106.656 49.581L106.656 1.8L122.688 1.8C131.252 1.8 137.163 8.597 137.163 16.166ZM93.49 31.038L93.49 1.801L83.368 1.801L83.368 31.869C83.368 35.453 82.174 37.633 81.119 38.828C79.783 40.446 77.322 42.063 73.666 42.063C70.01 42.063 67.549 40.446 66.213 38.828C65.159 37.633 63.963 35.453 63.963 31.869L63.963 1.801L53.843 1.801L53.843 31.038C53.843 35.699 54.582 40.433 57.541 44.205C61.092 48.865 67.305 51.306 73.666 51.306C80.027 51.306 86.241 48.865 89.791 44.205C92.75 40.433 93.49 35.699 93.49 31.038ZM188.623 1.801L165.744 40.529L188.465 40.529L188.465 49.581L149.38 49.581L171.937 10.536L152.527 10.536L152.527 1.801L188.623 1.801ZM121.056 22.765L116.028 22.782L116.028 10.544L121.815 10.528C124.536 10.528 127.795 12.466 127.835 16.647C127.795 20.828 124.105 22.765 121.056 22.765ZM220.904 40.928C212.543 40.928 205.766 34.151 205.766 25.79C205.766 17.431 212.543 10.654 220.904 10.654C229.264 10.654 236.041 17.431 236.041 25.79C236.041 34.151 229.264 40.928 220.904 40.928Z" id="Fill-1" fill-rule="evenodd" stroke="none"></path>
+      </svg>
+    </a>
+
+    
+    <ul class="navbar__list">
+      <li class="navbar__item search-desktop">
+        <label for="search-toggle" class="navbar__btn">
+          <svg class="navbar__icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </label>
+      </li>
+      <li class="navbar__btn navbar__item" onclick="{{handlerLogOut}}">
+        <img class="navbar__icon navbar__logout" src="../server/images/logout.svg" alt="Logout">
+      </li>
+
+      <li class="navbar__item dropdown">
+        <button class="dropdown__btn" onclick="{{handlerDropdown}}">
+          <img class="navbar__icon btn__img" src="{{avatar}}" alt="Profile">
+        </button>
+        <ul class="dropdown__content">
+            {{profiles}}
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="navbar__menu">
+    <label for="search-toggle" class="navbar__btn search-mobile">
+      <svg class="navbar__icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </label>
+    <ul class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="">Films</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="">Collections</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="">Discover</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="">Journal</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="">Membership</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="../statistiques/index.html">Statistiques</a></li>
+    </ul>
+  </div>
+</nav>

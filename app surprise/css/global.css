@@ -1,0 +1,13 @@
+body{
+    font-family: var(--ff-sans);
+    background-color: var(--color-bg);
+}
+.no-profile {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-weight: 700;
+    color: white;
+}

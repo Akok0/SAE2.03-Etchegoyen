@@ -20,3 +20,39 @@
         }
     }
 }
+
+.form__search{
+    display: flex;
+    flex-direction: column;
+    justify-content:  center;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    color: var(--color-fg);
+    .form__searchbar{
+        width: 70%;
+        height: 3rem;
+        padding: 1rem;
+    }
+    .Searchresultat{
+        min-height: 20rem;
+        width: 100%;
+        padding: 1rem;
+        background-color: rgb(55, 55, 55);
+        color: white;
+        .movie{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            .movie__info{
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                .movie__title{
+                    color: rgb(251, 0, 0);
+                    text-transform: uppercase;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 APP</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="icon" type="image/x-icon" href="../server/images/favicon.png">
+  </head>
+
+  <body>
+    <header id="header"></header>
+
+    <section id="content" class="content"></section>
+
+    <script type="module">
+      import { DataMovie } from "./data/dataMovie.js";
+      import { NavBar } from "./component/NavBar/script.js";
+      import { Movies } from "./component/Movies/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
+      import { MovieFavorite } from "./component/MovieFavorite/script.js";
+      import { MoviesHighlighted } from "./component/MovieHighlighted/script.js";
+      import { DataProfile } from "./data/dataProfiles.js";
+      import { DataFavorite } from "./data/dataFavorite.js";
+      import { DataHighlight } from "./data/dataHighlight.js";
+
+      let profiles = await DataProfile.requestProfiles();
+      let movies = null;
+      let ProfileId = null;
+      let profileSelected = "";
+      // Controleur
+      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
+      // Une fois l'application terminée, on pourrait remettre let C.
+      window.C = {};
+
+      C.handlerAbout = function () {
+        alert(
+          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
+        );
+      };
+
+      C.handlerDropdown = function () {
+        let dropdown = document.querySelector(".dropdown");
+        if (dropdown) {
+          dropdown.classList.toggle("open");
+        }
+      };
+
+      C.handlerSelectProfile = async function (id) {
+                let searchBar = document.querySelector(".navbar__searchbar");
+        if (searchBar) {
+          searchBar.value = "";
+        }
+        let content = document.querySelector("#content");
+        if (!id) {
+          content.innerHTML = `
+                <div class="no-profile">
+                    <p>Sélectionner un profile utilisateur pour commencer.</p>
+                </div>`;
+        V.renderNavBar("C.handlerAbout()", "C.handlerSelectProfile", profiles, profileSelected, "C.handlerLogOut()", "C.handlerDropdown()", "C.handlerSearch()");
+          return;
+        }
+        ProfileId = id;
+        content.innerHTML = "";
+        profileSelected = await DataProfile.requestProfiles(id);
+        movies = await DataMovie.requestMovies(profileSelected.min_age);
+        let favorite = await DataFavorite.requestFavorite(id);
+        let hightlight = await DataHighlight.requestHighlight(
+          profileSelected.min_age,
+        );
+        V.renderMoviesHighlighted("C.handlerMovieDetail", hightlight);
+        V.renderMoviesFavorite("C.handlerMovieDetail", favorite);
+        V.renderMoviesCategory(movies, "C.handlerMovieDetail");
+        V.renderNavBar("C.handlerAbout()", "C.handlerSelectProfile", profiles, profileSelected, "C.handlerLogOut()", "C.handlerDropdown()", "C.handlerSearch()");
+        let dropdown = document.querySelector(".dropdown");
+        if (dropdown) {
+          dropdown.classList.remove("open");
+        }
+      };
+
+      C.handlerMovieDetail = async function (id) {
+        let idProfile = ProfileId;
+        let selectedMovie = await DataMovie.requestMovieDetails(id, idProfile);
+        let selectedMovieComment = await DataMovie.requestCommentMovies(id, idProfile);
+
+        if (selectedMovie) {
+          V.renderMovieDetail(
+            selectedMovie,
+            "C.handlerAddFavorite("+ idProfile+ "," + id +")",
+          "C.handlerCloseMovieDetail()", "C.handlerNote("+ idProfile+ "," + id +")",
+          selectedMovieComment,
+          "C.handlerComment("+ idProfile+ "," + id +")"
+          );
+          if (selectedMovie.isFavorite == true) {
+            let favorite = document.querySelector(".detail__favorite");
+            if (favorite) {
+              favorite.classList.add("detail__favorite--select");
+            }
+          }
+        }
+      };
+
+      C.handlerCloseMovieDetail = function () {
+        C.handlerSelectProfile(ProfileId);
+      };
+
+      C.handlerSearch = async function () {
+        if (!ProfileId) {
+          C.handlerSelectProfile(ProfileId);
+          return;
+        }
+        let searchBar = document.querySelector(".navbar__search-input");
+        let searchValue = searchBar.value;
+        if (searchBar.value !== searchValue || searchValue == "") {
+          C.handlerSelectProfile(ProfileId);
+          return;
+        }
+        profileSelected = await DataProfile.requestProfiles(ProfileId);
+        let data = await DataMovie.requestSearchMovies(
+          searchValue, profileSelected.min_age
+          
+        );
+        document.querySelector("#content").innerHTML = Movies.format(
+          data,
+          "C.handlerMovieDetail"
+        );
+      };
+
+      C.handlerAddFavorite = async function (profile, movie) {
+        let result = await DataFavorite.updatefavorite(profile, movie);
+        let favorite = document.querySelector(".detail__favorite");
+
+        if (result == "Ajouté à la liste des favoris") {
+          favorite.classList.add("detail__favorite--select");
+          alert(result);
+        } else if (
+          result == "Retiré de la liste des favoris" ||
+          result == "Votre liste de favoris est vide"
+        ) {
+          favorite.classList.remove("detail__favorite--select");
+          alert(result);
+        } else {
+          alert(result);
+        }
+      };
+
+      C.handlerNote = async function (profile, movie) {
+        let note = document.querySelector(".detail__inputNote");
+        if (note.reportValidity()) {
+          let valeurNote = note.value;
+          let result = await DataMovie.addNote(movie, profile, valeurNote);
+          alert(result);
+        }
+      };
+
+      C.handlerComment = async function (profile, movie) {
+        let comment = document.querySelector(".detail__inputComment");
+        let pattern = /^[^<>]*$/;
+        if (!pattern.test(comment.value)) {
+            comment.setCustomValidity("Veuillez utiliser uniquement du texte (les caractères < et > sont interdits).");
+        } else {
+            comment.setCustomValidity("");
+        }
+        if (comment.reportValidity()) {
+          let valeurComment = comment.value;
+          let resultat = await DataMovie.addComment(movie, profile, valeurComment);
+          C.handlerMovieDetail(movie);
+        }
+      };
+
+      C.handlerLogOut = function () {
+        profileSelected = "";
+        ProfileId = null;
+        let searchBar = document.querySelector(".navbar__searchbar");
+        if (searchBar) {
+          searchBar.value = "";
+        }
+        let selectMenu = document.querySelector(".navbar select[name='id']");
+        if (selectMenu) {
+          selectMenu.value = "";
+        }
+        C.handlerSelectProfile(ProfileId);
+      };
+
+      C.start = function () {
+        C.handlerSelectProfile(ProfileId);
+
+      };
+
+      // Vue (contient tout ce qui est relatif à l'affichage)
+      window.V = {};
+
+      /**
+       * V.renderNavBar
+       *
+       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
+       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
+       * formaté par le composant NavBar.
+       */
+      V.renderProfiles = function (data, handler) {
+        let header = document.querySelector("#content");
+        header.innerHTML = Profiles.format(data, handler);
+      };
+      V.renderNavBar = function (
+        hAbout,
+        handlerSelect,
+        data,
+        profileSelected,
+        handlerLogOut,
+        handlerDropdown,
+        handlerSearch,
+      ) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(
+          hAbout,
+          handlerSelect,
+          data,
+          profileSelected,
+          handlerLogOut,
+          handlerDropdown,
+          handlerSearch,
+        );
+      };
+
+      V.renderMovies = function (data, handler, error) {
+        let content = document.querySelector("#content");
+        content.innerHTML = Movies.format(data, handler, error);
+      };
+      
+      V.renderMovieDetail = function (data, handlerFavorite, handlerClose, handlerNote, dataComment, handlerComment) {
+        let content = document.querySelector("#content");
+        content.innerHTML = MovieDetail.format(data, handlerFavorite, handlerClose, handlerNote, dataComment, handlerComment);
+      };
+
+      V.renderMoviesCategory = function (groupedData, handler) {
+        let content = document.querySelector("#content");
+        
+        if (groupedData.error) {
+        content.innerHTML += Movies.format(groupedData, handler);
+        return;
+    }
+        
+        let html = "";
+
+          for (let category in groupedData) {
+            let moviesInCat = groupedData[category];
+            let moviesHtml = Movies.format(moviesInCat, handler);
+            html += MovieCategory.format(category, moviesHtml);
+          }
+        content.innerHTML += html;
+      };
+      V.renderMoviesFavorite = function (handler, favoriteData) {
+    let content = document.querySelector("#content");
+    let favCards = Movies.format(favoriteData, handler);
+    content.innerHTML += MovieFavorite.format(favCards);
+      };
+
+      V.renderMoviesHighlighted = function (handler, highlightedData) {
+let content = document.querySelector("#content");
+    let highlightCards = Movies.format(highlightedData, handler);
+    content.innerHTML += MoviesHighlighted.format(highlightCards);
+      };
+
+      C.start(); // Démarre l'application
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+.moviesHighligh {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem; 
+    padding: 0 1rem;
+
+    @media(min-width : 55em){
+        padding: 0 12vw;
+    }
+    @media(min-width : 95em){
+        padding: 0 20vw;
+    }
+}
